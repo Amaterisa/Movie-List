@@ -71,6 +71,6 @@ class PopularMoviesFragment : Fragment() {
 
     private fun onAddToWatchList(movie: Movie) {
         Log.d(TAG, "Add movie to watchlist: $movie")
-        movie.isInWatchList = !movie.isInWatchList
+        viewModel.saveToWatchList(movie)
     }
 }

@@ -19,7 +19,6 @@ class MovieListAdapter(
     class MovieViewHolder(private val binding: ItemMovieBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(movie: Movie, onItemClick: (Movie) -> Unit, onWatchlistClick: (Movie) -> Unit) {
-
             val url = "https://image.tmdb.org/t/p/w300${movie.posterPath}"
 
             Glide.with(binding.root.context)

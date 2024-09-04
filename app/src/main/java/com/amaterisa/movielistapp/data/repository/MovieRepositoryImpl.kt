@@ -15,13 +15,18 @@ class MovieRepositoryImpl @Inject constructor(
     private val movieApiService: MovieApiService
 ): MovieRepository {
 
-    override suspend fun getPopularMovies(): Flow<List<Movie>> {
+    override fun getPopularMovies(): Flow<List<Movie>> {
         return flow {
             val result = getPopularMoviesRemote()
             if (result is Result.Success) {
                 emit(result.data)
             }
         }
+    }
+
+    override fun saveMovieToWatchList(movie: Movie) {
+        //TODO: apply persistence to saved data
+        movie.isInWatchList = !movie.isInWatchList
     }
 
     private suspend fun getPopularMoviesRemote(): Result<List<Movie>> =

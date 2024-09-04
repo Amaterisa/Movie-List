@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">MovieListApp</string>
+    <string name="top_movies_title">Top 30</string>
+</resources>

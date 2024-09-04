@@ -28,7 +28,11 @@ class PopularMoviesFragment : Fragment() {
     }
 
     private val movieListAdapter: MovieListAdapter by lazy {
-        MovieListAdapter({}, { movie -> onAddToWatchList(movie) })
+        MovieListAdapter(
+            resources.getDimensionPixelSize(R.dimen.top_movie_width),
+            resources.getDimensionPixelSize(R.dimen.top_movie_height),
+            {},
+            { movie -> onAddToWatchList(movie) })
     }
 
     override fun onCreateView(

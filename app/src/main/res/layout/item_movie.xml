@@ -6,16 +6,16 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/movie_card_View"
-        android:layout_width="@dimen/top_movie_width"
-        android:layout_height="@dimen/top_movie_height"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:cardCornerRadius="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/movie_image_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="@dimen/top_movie_width"
+            android:layout_height="@dimen/top_movie_height"
             android:scaleType="centerCrop" />
 
         <ImageView

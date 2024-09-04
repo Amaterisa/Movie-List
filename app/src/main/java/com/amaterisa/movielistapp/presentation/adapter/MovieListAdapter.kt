@@ -11,6 +11,8 @@ import com.amaterisa.movielistapp.domain.model.Movie
 import com.bumptech.glide.Glide
 
 class MovieListAdapter(
+    private val imageWidth: Int,
+    private val imageHeight: Int,
     private val onItemClick: (Movie) -> Unit,
     private val onWatchlistClick: (Movie) -> Unit
 ) : RecyclerView.Adapter<MovieListAdapter.MovieViewHolder>() {
@@ -18,20 +20,33 @@ class MovieListAdapter(
 
     class MovieViewHolder(private val binding: ItemMovieBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(movie: Movie, onItemClick: (Movie) -> Unit, onWatchlistClick: (Movie) -> Unit) {
+        fun bind(
+            movie: Movie,
+            imageWidth: Int,
+            imageHeight: Int,
+            onItemClick: (Movie) -> Unit,
+            onWatchlistClick: (Movie) -> Unit
+        ) {
             val url = "https://image.tmdb.org/t/p/w300${movie.posterPath}"
 
-            Glide.with(binding.root.context)
-                .load(url)
-                .into(binding.movieImageView)
+            binding.run {
+                val layoutParams = movieImageView.layoutParams
+                layoutParams.width = imageWidth
+                layoutParams.height = imageHeight
+                movieImageView.layoutParams = layoutParams
 
-            setButtonDrawable(binding.addBtn, movie)
+                Glide.with(root.context)
+                    .load(url)
+                    .into(movieImageView)
 
-            binding.root.setOnClickListener { onItemClick(movie) }
+                setButtonDrawable(addBtn, movie)
 
-            binding.addBtn.setOnClickListener {
-                onWatchlistClick(movie)
-                setButtonDrawable(binding.addBtn, movie)
+                root.setOnClickListener { onItemClick(movie) }
+
+                addBtn.setOnClickListener {
+                    onWatchlistClick(movie)
+                    setButtonDrawable(addBtn, movie)
+                }
             }
         }
 
@@ -52,7 +67,7 @@ class MovieListAdapter(
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        holder.bind(movieList[position], onItemClick, onWatchlistClick)
+        holder.bind(movieList[position], imageWidth, imageHeight, onItemClick, onWatchlistClick)
     }
 
     override fun getItemCount(): Int = movieList.size

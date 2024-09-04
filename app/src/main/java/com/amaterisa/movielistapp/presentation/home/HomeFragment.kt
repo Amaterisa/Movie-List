@@ -1,0 +1,85 @@
+package com.amaterisa.movielistapp.presentation.home
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import com.amaterisa.movielistapp.R
+import com.amaterisa.movielistapp.databinding.FragmentHomeBinding
+import com.amaterisa.movielistapp.domain.model.Movie
+import com.amaterisa.movielistapp.presentation.adapter.LinearItemDecoration
+import com.amaterisa.movielistapp.presentation.base.BaseFragment
+import com.amaterisa.movielistapp.utils.ViewUtils.toVisibility
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
+class HomeFragment : BaseFragment<HomeViewModel>() {
+
+    companion object {
+        const val TAG = "HomeFragment"
+    }
+
+    override val viewModel: HomeViewModel by viewModels()
+
+    private val binding: FragmentHomeBinding by lazy {
+        FragmentHomeBinding.inflate(layoutInflater)
+    }
+
+    private val moviesByGenreAdapter: MoviesByGenreAdapter by lazy {
+        MoviesByGenreAdapter(
+            resources.getDimensionPixelSize(R.dimen.home_movie_width),
+            resources.getDimensionPixelSize(R.dimen.home_movie_height),
+            {},
+            { movie -> onAddToWatchList(movie) })
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initObservers()
+        setupBinding()
+        viewModel.getGenreList()
+        manageViews(true)
+    }
+
+    override fun onAddToWatchList(movie: Movie) {
+        super.onAddToWatchList(movie)
+        //moviesByGenreAdapter.addToWatchList(movie)
+
+    }
+
+    private fun initObservers() {
+        viewModel.genreListResult.observe(viewLifecycleOwner) {
+            for (genre in it) {
+                viewModel.getMoviesByGenre(genre)
+            }
+        }
+
+        viewModel.movieResult.observe(viewLifecycleOwner) {
+            manageViews(false)
+            moviesByGenreAdapter.setMoviesByGenre(it)
+        }
+    }
+
+    private fun setupBinding() {
+        binding.run {
+            genresRv.adapter = moviesByGenreAdapter
+            val spaceInPixels = resources.getDimensionPixelSize(R.dimen.default_padding)
+            genresRv.addItemDecoration(LinearItemDecoration(spaceInPixels, true))
+        }
+    }
+
+    private fun manageViews(isLoading: Boolean) {
+        binding.run {
+            genresRv.toVisibility(!isLoading)
+            progressBar.toVisibility(isLoading)
+        }
+    }
+}

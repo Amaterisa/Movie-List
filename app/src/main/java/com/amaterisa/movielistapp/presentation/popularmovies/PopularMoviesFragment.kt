@@ -1,27 +1,25 @@
 package com.amaterisa.movielistapp.presentation.popularmovies
 
-import androidx.fragment.app.viewModels
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import com.amaterisa.movielistapp.R
 import com.amaterisa.movielistapp.databinding.FragmentPopularMoviesBinding
-import com.amaterisa.movielistapp.domain.model.Movie
-import com.amaterisa.movielistapp.utils.ViewUtils.toVisibility
 import com.amaterisa.movielistapp.presentation.adapter.GridSpaceItemDecoration
 import com.amaterisa.movielistapp.presentation.adapter.MovieListAdapter
+import com.amaterisa.movielistapp.presentation.base.BaseFragment
+import com.amaterisa.movielistapp.utils.ViewUtils.toVisibility
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PopularMoviesFragment : Fragment() {
+class PopularMoviesFragment : BaseFragment<PopularMoviesViewModel>() {
     companion object {
         const val TAG = "PopularMoviesFragment"
     }
 
-    private val viewModel: PopularMoviesViewModel by viewModels()
+    override val viewModel: PopularMoviesViewModel by viewModels()
 
     private val binding: FragmentPopularMoviesBinding by lazy {
         FragmentPopularMoviesBinding.inflate(layoutInflater)
@@ -71,10 +69,5 @@ class PopularMoviesFragment : Fragment() {
             moviesRv.toVisibility(!isLoading)
             progressBar.toVisibility(isLoading)
         }
-    }
-
-    private fun onAddToWatchList(movie: Movie) {
-        Log.d(TAG, "Add movie to watchlist: $movie")
-        viewModel.saveToWatchList(movie)
     }
 }

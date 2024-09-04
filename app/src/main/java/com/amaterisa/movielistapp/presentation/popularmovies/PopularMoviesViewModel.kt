@@ -9,6 +9,7 @@ import com.amaterisa.movielistapp.domain.model.Movie
 import com.amaterisa.movielistapp.domain.repository.MovieRepository
 import com.amaterisa.movielistapp.domain.usecase.GetPopularMoviesUseCase
 import com.amaterisa.movielistapp.domain.usecase.SaveMovieToWatchListUseCase
+import com.amaterisa.movielistapp.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,8 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class PopularMoviesViewModel @Inject constructor(
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
-    private val saveMovieToWatchListUseCase: SaveMovieToWatchListUseCase
-) : ViewModel() {
+    saveMovieToWatchListUseCase: SaveMovieToWatchListUseCase
+) : BaseViewModel(saveMovieToWatchListUseCase) {
     companion object {
         private const val TAG = "PopularMoviesViewModel"
     }
@@ -33,9 +34,5 @@ class PopularMoviesViewModel @Inject constructor(
                 Log.d(TAG, "result $it")
             }
         }
-    }
-
-    fun saveToWatchList(movie: Movie) {
-        saveMovieToWatchListUseCase.invoke(movie)
     }
 }

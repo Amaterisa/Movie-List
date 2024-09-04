@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/popularMoviesFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
         android:id="@+id/popularMoviesFragment"
@@ -11,4 +11,9 @@
         android:label="@string/trending_label"
         tools:layout="@layout/fragment_popular_movies" />
 
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.amaterisa.movielistapp.presentation.home.HomeFragment"
+        android:label="@string/movies_label"
+        tools:layout="@layout/fragment_home" />
 </navigation>

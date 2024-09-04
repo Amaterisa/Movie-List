@@ -27,6 +27,10 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "AUTH_TOKEN", "\"eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1Njc0MjFmZWZmYmJmY2IzNmZjNDk3MWQ1ODYzN2U1ZSIsIm5iZiI6MTcyNTM5OTMxMi40NzM4NTUsInN1YiI6IjY2ZDc3ZDJiYjA1NTM2YWI2OWI4OGU1NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4sjzYREfPm-PrdtmZaLuwFU5q_wqSHO8EZpUDwd6kGE\"")
+        }
+        debug {
+            buildConfigField("String", "AUTH_TOKEN", "\"eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1Njc0MjFmZWZmYmJmY2IzNmZjNDk3MWQ1ODYzN2U1ZSIsIm5iZiI6MTcyNTM5OTMxMi40NzM4NTUsInN1YiI6IjY2ZDc3ZDJiYjA1NTM2YWI2OWI4OGU1NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4sjzYREfPm-PrdtmZaLuwFU5q_wqSHO8EZpUDwd6kGE\"")
         }
     }
     compileOptions {
@@ -39,6 +43,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 

@@ -76,4 +76,14 @@ class MovieListAdapter(
         movieList.clear()
         movieList.addAll(movies)
     }
+
+    fun addToWatchList(movie: Movie) {
+        val index = movieList.indexOfFirst { it.id == movie.id }
+        if (index != -1) {
+            movieList[index] = movie
+            notifyItemChanged(index)
+        }
+    }
+
+    fun getMovies(): List<Movie> = movieList.toList()
 }

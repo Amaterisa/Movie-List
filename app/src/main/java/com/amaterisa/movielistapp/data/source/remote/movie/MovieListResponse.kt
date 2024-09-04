@@ -1,4 +1,4 @@
-package com.amaterisa.movielistapp.data.source.remote
+package com.amaterisa.movielistapp.data.source.remote.movie
 
 import com.google.gson.annotations.SerializedName
 

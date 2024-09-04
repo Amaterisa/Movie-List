@@ -8,6 +8,8 @@
     <dimen name="a_quarter_default_padding">12dp</dimen>
     <dimen name="top_movie_width">176dp</dimen>
     <dimen name="top_movie_height">264dp</dimen>
+    <dimen name="home_movie_width">152dp</dimen>
+    <dimen name="home_movie_height">224dp</dimen>
 
     <dimen name="title_size">22sp</dimen>
 </resources>

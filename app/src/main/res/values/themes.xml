@@ -8,8 +8,8 @@
 
     <style name="Theme.MovieListApp" parent="Base.Theme.MovieListApp" />
 
-    <style name="RoundedCornerImageView">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">16dp</item>
+    <style name="ToolbarStyle" parent="">
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="theme">@style/ThemeOverlay.AppCompat.DayNight.ActionBar</item>
     </style>
 </resources>

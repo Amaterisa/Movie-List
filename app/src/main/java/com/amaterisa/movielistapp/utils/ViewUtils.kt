@@ -1,4 +1,4 @@
-package com.amaterisa.movielistapp.domain.common
+package com.amaterisa.movielistapp.utils
 
 import android.view.View
 

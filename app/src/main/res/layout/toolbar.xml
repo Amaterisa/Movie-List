@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.appbar.MaterialToolbar
+    android:id="@+id/toolbar_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textSize="@dimen/title_size"
+    android:background="@color/transparent"
+    app:titleCentered="true"
+    android:theme="@style/ToolbarStyle"
+    app:menu="@menu/toolbar_menu"
+    app:titleTextColor="@color/font_color"
+    android:text="@string/trending_label"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:title="Title"
+    xmlns:tools="http://schemas.android.com/tools" />

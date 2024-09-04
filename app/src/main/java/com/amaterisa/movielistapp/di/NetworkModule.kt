@@ -15,14 +15,10 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
     const val AUTH_HEADER = "Authorization"
-    const val baseUrl = "https://api.themoviedb.org/3/"
     const val authToken = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1Njc0MjFmZWZmYmJmY2IzNmZjNDk3MWQ1ODYzN2U1ZSIsIm5iZiI6MTcyNTM5OTMxMi40NzM4NTUsInN1YiI6IjY2ZDc3ZDJiYjA1NTM2YWI2OWI4OGU1NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4sjzYREfPm-PrdtmZaLuwFU5q_wqSHO8EZpUDwd6kGE"
-    const val apiKey = "567421feffbbfcb36fc4971d58637e5e"
-//    @Provides
-//    fun provideBaseUrl() = "https://api.themoviedb.org/3"
-//
-//    @Provides
-//    fun provideAuthToken() = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1Njc0MjFmZWZmYmJmY2IzNmZjNDk3MWQ1ODYzN2U1ZSIsIm5iZiI6MTcyNTM5OTMxMi40NzM4NTUsInN1YiI6IjY2ZDc3ZDJiYjA1NTM2YWI2OWI4OGU1NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4sjzYREfPm-PrdtmZaLuwFU5q_wqSHO8EZpUDwd6kGE"
+
+    @Provides
+    fun provideBaseUrl() = "https://api.themoviedb.org/3/"
 
     @Singleton
     @Provides
@@ -36,7 +32,7 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+    fun provideRetrofit(okHttpClient: OkHttpClient, baseUrl: String): Retrofit {
         return Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(okHttpClient)

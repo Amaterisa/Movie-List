@@ -6,5 +6,6 @@ data class Movie(
     val posterPath: String,
     val releaseDate: String,
     val voteAverage: String,
-    val genreIds: List<Int>
+    val genreIds: List<Int>,
+    var isInWatchList: Boolean = false
 )

@@ -2,20 +2,24 @@ package com.amaterisa.movielistapp.presentation.popularmovies
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.GridLayoutManager
 import com.amaterisa.movielistapp.R
 import com.amaterisa.movielistapp.databinding.FragmentPopularMoviesBinding
-import com.amaterisa.movielistapp.domain.common.ViewUtils.toVisibility
+import com.amaterisa.movielistapp.domain.model.Movie
+import com.amaterisa.movielistapp.utils.ViewUtils.toVisibility
 import com.amaterisa.movielistapp.presentation.adapter.GridSpaceItemDecoration
 import com.amaterisa.movielistapp.presentation.adapter.MovieListAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class PopularMoviesFragment : Fragment() {
+    companion object {
+        const val TAG = "PopularMoviesFragment"
+    }
 
     private val viewModel: PopularMoviesViewModel by viewModels()
 
@@ -24,7 +28,7 @@ class PopularMoviesFragment : Fragment() {
     }
 
     private val movieListAdapter: MovieListAdapter by lazy {
-        MovieListAdapter({}, {})
+        MovieListAdapter({}, { movie -> onAddToWatchList(movie) })
     }
 
     override fun onCreateView(
@@ -45,9 +49,8 @@ class PopularMoviesFragment : Fragment() {
     private fun setupBinding() {
         binding.run {
             moviesRv.adapter = movieListAdapter
-            //moviesRv.layoutManager = GridLayoutManager(this@PopularMoviesFragment.context, 3)
 
-            val spaceInPixels = resources.getDimensionPixelSize(R.dimen.half_default_padding) // Define in dimens.xml or use a fixed value
+            val spaceInPixels = resources.getDimensionPixelSize(R.dimen.half_default_padding)
             moviesRv.addItemDecoration(GridSpaceItemDecoration(spaceInPixels))
         }
     }
@@ -64,5 +67,10 @@ class PopularMoviesFragment : Fragment() {
             moviesRv.toVisibility(!isLoading)
             progressBar.toVisibility(isLoading)
         }
+    }
+
+    private fun onAddToWatchList(movie: Movie) {
+        Log.d(TAG, "Add movie to watchlist: $movie")
+        movie.isInWatchList = !movie.isInWatchList
     }
 }

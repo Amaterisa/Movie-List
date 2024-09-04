@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">MovieListApp</string>
     <string name="trending_label">Trending</string>
+    <string name="search_label">Search</string>
 </resources>

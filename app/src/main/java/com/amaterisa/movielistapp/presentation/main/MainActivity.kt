@@ -1,11 +1,17 @@
 package com.amaterisa.movielistapp.presentation.main
 
 import android.os.Bundle
+import android.view.Menu
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.amaterisa.movielistapp.R
 import com.amaterisa.movielistapp.databinding.ActivityMainBinding
 import com.amaterisa.movielistapp.presentation.popularmovies.PopularMoviesFragment
@@ -30,18 +36,38 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        openFragment()
+        setSupportActionBar(binding.toolbar.toolbarLayout)
+        setupNavigation()
+        setupBinding()
     }
 
-    private fun openFragment() {
-        // Create an instance of the fragment
-        val fragment = PopularMoviesFragment()
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_menu, menu)
+        return true
+    }
 
-        // Replace the current fragment with the new one
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.main, fragment) // Replace with the correct container ID
-            .addToBackStack(null) // Optional: Add to back stack for navigation
-            .commit()
+    override fun onSupportNavigateUp(): Boolean {
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+        return navController.navigateUp() || super.onSupportNavigateUp()
+    }
+
+    private fun setupNavigation() {
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+        val appBarConfiguration = AppBarConfiguration(navController.graph)
+
+        binding.toolbar.toolbarLayout.setupWithNavController(navController, appBarConfiguration)
+        setupActionBarWithNavController(navController, appBarConfiguration)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            binding.toolbar.toolbarLayout.title = destination.label
+        }
+    }
+
+    private fun setupBinding() {
+
     }
 }

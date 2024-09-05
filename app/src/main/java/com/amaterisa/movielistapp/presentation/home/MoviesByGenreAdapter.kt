@@ -18,7 +18,6 @@ class MoviesByGenreAdapter(
 ) : RecyclerView.Adapter<MoviesByGenreAdapter.MoviesByGenreViewHolder>() {
     private var moviesByGenre: MutableMap<String, MutableList<Movie>> = mutableMapOf()
     private var genres: MutableList<String> = mutableListOf()
-    private var lastAddedMovie: Movie? = null
 
     class MoviesByGenreViewHolder(private val binding: ItemHomeMovieByGenreBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -37,18 +36,12 @@ class MoviesByGenreAdapter(
             imageHeight: Int,
             onItemClick: (Movie) -> Unit,
             onWatchlistClick: (Movie) -> Unit,
-            lastAddedMovie: Movie? = null
         ) {
             binding.run {
                 txvGenre.text = genre
-                if (adapter == null) {
-                    adapter =
-                        MovieListAdapter(imageWidth, imageHeight, onItemClick, onWatchlistClick)
-                    adapter?.setMovies(movies)
-                } else {
-                    val index = movies.indexOfFirst { it.id == lastAddedMovie?.id }
-                    adapter?.addToWatchList(movies[index])
-                }
+                adapter =
+                    MovieListAdapter(imageWidth, imageHeight, onItemClick, onWatchlistClick)
+                adapter?.setMovies(movies)
                 binding.moviesRv.adapter = adapter
 
             }
@@ -64,7 +57,14 @@ class MoviesByGenreAdapter(
     override fun onBindViewHolder(holder: MoviesByGenreViewHolder, position: Int) {
         val genre = genres[position]
         val movies = moviesByGenre[genre] ?: emptyList()
-        holder.bind(genre, movies, imageWidth, imageHeight, onItemClick, onWatchlistClick, lastAddedMovie)
+        holder.bind(
+            genre,
+            movies,
+            imageWidth,
+            imageHeight,
+            onItemClick,
+            onWatchlistClick
+        )
     }
 
     override fun getItemCount(): Int {
@@ -92,7 +92,6 @@ class MoviesByGenreAdapter(
             val index = movies.indexOfFirst { it.id == movie.id }
             if (index != -1) {
                 movies[index] = movie
-                lastAddedMovie = movie
                 notifyItemChanged(genres.indexOf(genre))
             }
         }

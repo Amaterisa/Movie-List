@@ -6,6 +6,8 @@
     <color name="cherry_dark">#C9184A</color>
     <color name="background_color">#101010</color>
     <color name="font_color">#F7F7F7</color>
+    <color name="gray">#A3A3A5</color>
+    <color name="dark_gray">#171717</color>
     <color name="transparent">#00000000</color>
 
 </resources>

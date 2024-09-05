@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.RecyclerView
 import com.amaterisa.movielistapp.R
 import com.amaterisa.movielistapp.databinding.FragmentWatchListBinding
 import com.amaterisa.movielistapp.domain.model.WatchListMovie
@@ -57,6 +58,22 @@ class WatchListFragment : Fragment() {
             moviesRv.adapter = watchListAdapter
             val spaceInPixels = resources.getDimensionPixelSize(R.dimen.half_default_padding)
             moviesRv.addItemDecoration(LinearItemDecoration(spaceInPixels, true))
+
+            moviesRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+
+                    if (dy > 0) {
+                        btnTop.visibility = View.VISIBLE
+                    } else if (!recyclerView.canScrollVertically(-1)) {
+                        btnTop.visibility = View.GONE
+                    }
+                }
+            })
+
+            btnTop.setOnClickListener {
+                moviesRv.smoothScrollToPosition(0)
+            }
         }
     }
 

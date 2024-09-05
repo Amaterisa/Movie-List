@@ -18,6 +18,7 @@
     <dimen name="img_button_size">48dp</dimen>
     <dimen name="icon_padding">4dp</dimen>
     <dimen name="button_height">40dp</dimen>
+    <dimen name="top_button_width">64dp</dimen>
 
     <dimen name="title_size">22sp</dimen>
     <dimen name="normal_size">14sp</dimen>

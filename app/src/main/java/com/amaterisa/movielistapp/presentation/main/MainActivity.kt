@@ -22,9 +22,9 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     companion object {
         const val TAG = "MainActivity"
-        const val HOME_FRAGMENT = "HOME_FRAGMENT"
-        const val POPULAR_MOVIES_FRAGMENT = "POPULAR_MOVIES_FRAGMENT"
-        const val WATCH_LIST_FRAGMENT = "WATCH_LIST_FRAGMENT"
+        const val HOME_FRAGMENT = "Movies"
+        const val POPULAR_MOVIES_FRAGMENT = "Trending"
+        const val WATCH_LIST_FRAGMENT = "My list"
     }
 
     private val binding: ActivityMainBinding by lazy {
@@ -79,20 +79,14 @@ class MainActivity : AppCompatActivity() {
                     loadFragment(HomeFragment(), HOME_FRAGMENT)
                     true
                 }
-
                 R.id.nav_popular -> {
                     loadFragment(PopularMoviesFragment(), POPULAR_MOVIES_FRAGMENT)
                     true
                 }
-
                 R.id.nav_list -> {
                     loadFragment(WatchListFragment(), WATCH_LIST_FRAGMENT)
-//                    supportFragmentManager.beginTransaction()
-//                        .replace(R.id.nav_host_fragment, WatchListFragment())
-//                        .commit()
                     true
                 }
-
                 else -> false
             }
         }
@@ -134,5 +128,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         transaction.commit()
+        binding.toolbar.toolbarLayout.title = tag
     }
 }

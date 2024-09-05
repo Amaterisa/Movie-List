@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.RecyclerView
 import com.amaterisa.movielistapp.R
 import com.amaterisa.movielistapp.databinding.FragmentPopularMoviesBinding
 import com.amaterisa.movielistapp.presentation.adapter.GridSpaceItemDecoration
@@ -51,9 +52,24 @@ class PopularMoviesFragment : BaseFragment<PopularMoviesViewModel>() {
     private fun setupBinding() {
         binding.run {
             moviesRv.adapter = movieListAdapter
-
             val spaceInPixels = resources.getDimensionPixelSize(R.dimen.half_default_padding)
             moviesRv.addItemDecoration(GridSpaceItemDecoration(spaceInPixels))
+
+            moviesRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+
+                    if (dy > 0) {
+                        btnTop.visibility = View.VISIBLE
+                    } else if (!recyclerView.canScrollVertically(-1)) {
+                        btnTop.visibility = View.GONE
+                    }
+                }
+            })
+
+            btnTop.setOnClickListener {
+                moviesRv.smoothScrollToPosition(0)
+            }
         }
     }
 

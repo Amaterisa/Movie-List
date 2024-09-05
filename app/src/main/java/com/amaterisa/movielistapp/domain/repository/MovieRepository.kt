@@ -7,7 +7,11 @@ import kotlinx.coroutines.flow.Flow
 interface MovieRepository {
     fun getPopularMovies(): Flow<List<Movie>>
 
-    fun saveMovieToWatchList(movie: Movie)
+    suspend fun saveMovieToWatchList(movie: Movie)
+
+    suspend fun getWatchList(): List<Movie>
+
+    suspend fun removeMovieFromWatchList(movie: Movie)
 
     fun getGenreList(): Flow<List<Genre>>
 

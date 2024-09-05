@@ -16,4 +16,10 @@
         android:name="com.amaterisa.movielistapp.presentation.home.HomeFragment"
         android:label="@string/movies_label"
         tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/watchListFragment"
+        android:name="com.amaterisa.movielistapp.presentation.watchlist.WatchListFragment"
+        android:label="@string/watch_list_label"
+        tools:layout="@layout/fragment_watch_list" />
 </navigation>

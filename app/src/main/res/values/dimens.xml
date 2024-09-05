@@ -11,6 +11,12 @@
     <dimen name="home_movie_width">152dp</dimen>
     <dimen name="home_movie_height">224dp</dimen>
     <dimen name="bottom_nav_item_padding">20dp</dimen>
+    <dimen name="text_margin_top">8dp</dimen>
+    <dimen name="watch_list_img_width">94dp</dimen>
+    <dimen name="watch_list_img_height">140dp</dimen>
+    <dimen name="watch_list_txt_height">56dp</dimen>
 
     <dimen name="title_size">22sp</dimen>
+    <dimen name="normal_size">14sp</dimen>
+    <dimen name="small_size">12sp</dimen>
 </resources>

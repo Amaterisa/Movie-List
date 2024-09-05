@@ -4,7 +4,6 @@
         <item name="colorSecondary">@color/cherry_light</item>
         <item name="android:windowBackground">@color/black</item>
         <item name="android:textColor">@color/font_color</item>
-        <item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
     </style>
 
     <style name="Theme.MovieListApp" parent="Base.Theme.MovieListApp" />
@@ -14,34 +13,12 @@
         <item name="theme">@style/ThemeOverlay.AppCompat.DayNight.ActionBar</item>
     </style>
 
-    <style name="CustomBottomNavStyle" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
-        <item name="itemIconTint">@color/gray</item>
-        <item name="itemTextColor">@color/gray</item>
-        <item name="itemRippleColor">@color/cherry_light</item>
-        <item name="backgroundTint">@color/dark_gray</item>
-    </style>
-
     <style name="CustomBottomNavActiveIndicator" parent="">
         <item name="android:color">@color/cherry_light</item>
-    </style>
-
-    <!-- Define a custom shape appearance for the active indicator -->
-    <style name="ActiveIndicatorShapeAppearance" parent="ShapeAppearance.MaterialComponents.SmallComponent">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">50%</item> <!-- Makes the indicator a pill shape -->
     </style>
 
     <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
         <item name="android:color">@color/cherry_dark</item>
     </style>
 
-    <style name="Widget.App.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
-        <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>
-        <item name="itemActiveIndicatorStyle">@style/CustomBottomNavActiveIndicator</item>
-    </style>
-
-    <style name="ThemeOverlay.App.BottomNavigationView" parent="">
-        <item name="colorSurface">@color/cherry_dark</item>
-        <item name="colorOnSurfaceVariant">@color/black</item>
-    </style>
 </resources>

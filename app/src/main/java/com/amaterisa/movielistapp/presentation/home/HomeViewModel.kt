@@ -42,7 +42,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun getMoviesByGenre(genre: Genre) {
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch {
             getMoviesByGetGenreUseCase.invoke(genre).collect {
                 val pair = Pair(genre, it)
                 _movieResult.postValue(pair)

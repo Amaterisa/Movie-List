@@ -17,6 +17,7 @@ import com.amaterisa.movielistapp.R
 import com.amaterisa.movielistapp.databinding.ActivityMainBinding
 import com.amaterisa.movielistapp.presentation.home.HomeFragment
 import com.amaterisa.movielistapp.presentation.popularmovies.PopularMoviesFragment
+import com.amaterisa.movielistapp.presentation.watchlist.WatchListFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         const val TAG = "MainActivity"
         const val HOME_FRAGMENT="HOME_FRAGMENT"
         const val POPULAR_MOVIES_FRAGMENT="POPULAR_MOVIES_FRAGMENT"
+        const val WATCH_LIST_FRAGMENT="WATCH_LIST_FRAGMENT"
     }
 
     private val binding: ActivityMainBinding by lazy {
@@ -35,7 +37,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        
+
         setSupportActionBar(binding.toolbar.toolbarLayout)
         setupNavigation()
 
@@ -59,7 +61,7 @@ class MainActivity : AppCompatActivity() {
     private fun setupNavigation() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
-        val appBarConfiguration = AppBarConfiguration(setOf(R.id.nav_home, R.id.nav_popular))
+        val appBarConfiguration = AppBarConfiguration(setOf(R.id.nav_home, R.id.nav_popular, R.id.nav_list))
 
         binding.toolbar.toolbarLayout.setupWithNavController(navController, appBarConfiguration)
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -78,9 +80,12 @@ class MainActivity : AppCompatActivity() {
                     loadFragment(HomeFragment(), HOME_FRAGMENT)
                     true
                 }
-
                 R.id.nav_popular -> {
                     loadFragment(PopularMoviesFragment(), POPULAR_MOVIES_FRAGMENT)
+                    true
+                }
+                R.id.nav_list -> {
+                    loadFragment(WatchListFragment(), WATCH_LIST_FRAGMENT)
                     true
                 }
 

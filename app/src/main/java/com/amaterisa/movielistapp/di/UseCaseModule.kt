@@ -4,6 +4,8 @@ import com.amaterisa.movielistapp.domain.repository.MovieRepository
 import com.amaterisa.movielistapp.domain.usecase.GetGenreUseCase
 import com.amaterisa.movielistapp.domain.usecase.GetMoviesByGenreUseCase
 import com.amaterisa.movielistapp.domain.usecase.GetPopularMoviesUseCase
+import com.amaterisa.movielistapp.domain.usecase.GetWatchListUseCase
+import com.amaterisa.movielistapp.domain.usecase.RemoveMovieFromWatchListUseCase
 import com.amaterisa.movielistapp.domain.usecase.SaveMovieToWatchListUseCase
 import dagger.Module
 import dagger.Provides
@@ -33,5 +35,15 @@ object UseCaseModule {
     @Provides
     fun provideSaveMovieToWatchListUseCase(movieRepository: MovieRepository) =
         SaveMovieToWatchListUseCase(movieRepository)
+
+    @Singleton
+    @Provides
+    fun provideGetWatchListUseCase(movieRepository: MovieRepository) =
+        GetWatchListUseCase(movieRepository)
+
+    @Singleton
+    @Provides
+    fun provideRemoveMovieFromWatchListUseCase(movieRepository: MovieRepository) =
+        RemoveMovieFromWatchListUseCase(movieRepository)
 
 }

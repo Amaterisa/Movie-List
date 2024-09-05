@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/half_default_padding"
+    android:background="@drawable/rounded_background">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/movie_card_View"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/movie_image_view"
+            android:layout_width="@dimen/watch_list_img_width"
+            android:layout_height="@dimen/watch_list_img_height"
+            android:scaleType="centerCrop" />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/txv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/no_items_title"
+        android:textSize="@dimen/normal_size"
+        android:layout_marginStart="@dimen/default_material_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/movie_card_View"
+        app:layout_constraintTop_toTopOf="@id/movie_card_View" />
+
+    <TextView
+        android:id="@+id/txv_description"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/watch_list_txt_height"
+        android:text="@string/no_items_description"
+        android:textAlignment="textStart"
+        android:textSize="@dimen/small_size"
+        android:textColor="@color/gray"
+        android:maxLines="3"
+        android:ellipsize="end"
+        app:layout_constraintStart_toStartOf="@id/txv_title"
+        app:layout_constraintEnd_toEndOf="@id/txv_title"
+        android:layout_marginTop="@dimen/half_default_padding"
+        app:layout_constraintTop_toBottomOf="@id/txv_title"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_mark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cornerRadius="24dp"
+        android:backgroundTint="@color/cherry_dark"
+        app:rippleColor="@color/font_color"
+        android:textColor="@color/dark_gray"
+        android:text="@string/search_button"
+        android:textAllCaps="false"
+        app:icon="@drawable/ic_check"
+        app:iconGravity="start"
+        app:iconTint="@color/dark_gray"
+        app:iconPadding="4dp"
+        app:layout_constraintStart_toStartOf="@id/txv_title"
+        app:layout_constraintTop_toBottomOf="@id/txv_description"
+        app:layout_constraintBottom_toBottomOf="@id/movie_card_View"/>
+
+    <ImageButton
+        android:id="@+id/btn_remove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_trash"
+        app:layout_constraintTop_toTopOf="@id/btn_mark"
+        app:layout_constraintBottom_toBottomOf="@id/btn_mark"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/transparent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,4 +8,9 @@
         android:id="@+id/nav_popular"
         android:title="@string/trending_label"
         android:icon="@drawable/ic_trending_selector" />
+
+    <item
+        android:id="@+id/nav_list"
+        android:title="@string/watch_list_label"
+        android:icon="@drawable/ic_list_selector" />
 </menu>

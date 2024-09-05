@@ -26,9 +26,17 @@ class MovieRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun saveMovieToWatchList(movie: Movie) {
+    override suspend fun saveMovieToWatchList(movie: Movie) {
         //TODO: apply persistence to saved data
         movie.isInWatchList = !movie.isInWatchList
+    }
+
+    override suspend fun getWatchList(): List<Movie> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun removeMovieFromWatchList(movie: Movie) {
+        TODO("Not yet implemented")
     }
 
     override fun getGenreList(): Flow<List<Genre>> {

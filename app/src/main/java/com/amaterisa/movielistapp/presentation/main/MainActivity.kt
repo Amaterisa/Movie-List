@@ -6,6 +6,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -23,6 +24,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     companion object {
         const val TAG = "MainActivity"
+        const val HOME_FRAGMENT="HOME_FRAGMENT"
+        const val POPULAR_MOVIES_FRAGMENT="POPULAR_MOVIES_FRAGMENT"
     }
 
     private val binding: ActivityMainBinding by lazy {
@@ -32,8 +35,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        
         setSupportActionBar(binding.toolbar.toolbarLayout)
         setupNavigation()
+
+        if (savedInstanceState == null) {
+            loadFragment(HomeFragment(), HOME_FRAGMENT)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -67,16 +75,12 @@ class MainActivity : AppCompatActivity() {
         bottomNav.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_home -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.nav_host_fragment, HomeFragment())
-                        .commit()
+                    loadFragment(HomeFragment(), HOME_FRAGMENT)
                     true
                 }
 
                 R.id.nav_popular -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.nav_host_fragment, PopularMoviesFragment())
-                        .commit()
+                    loadFragment(PopularMoviesFragment(), POPULAR_MOVIES_FRAGMENT)
                     true
                 }
 
@@ -96,5 +100,22 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
+    }
+
+    private fun loadFragment(fragment: Fragment, tag: String) {
+        val fragmentManager = supportFragmentManager
+        val existingFragment = fragmentManager.findFragmentByTag(tag)
+
+        val transaction = fragmentManager.beginTransaction()
+
+        if (existingFragment != null) {
+            fragmentManager.fragments.forEach { transaction.hide(it) }
+            transaction.show(existingFragment)
+        } else {
+            fragmentManager.fragments.forEach { transaction.hide(it) }
+            transaction.add(R.id.nav_host_fragment, fragment, tag)
+        }
+
+        transaction.commit()
     }
 }

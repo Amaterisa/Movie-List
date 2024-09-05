@@ -4,8 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.amaterisa.movielistapp.domain.model.Movie
+import com.amaterisa.movielistapp.domain.model.WatchListMovie
 import com.amaterisa.movielistapp.domain.usecase.GetWatchListUseCase
+import com.amaterisa.movielistapp.domain.usecase.MarkWatchListMovieUseCase
 import com.amaterisa.movielistapp.domain.usecase.RemoveMovieFromWatchListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -14,10 +15,11 @@ import javax.inject.Inject
 @HiltViewModel
 class WatchListViewModel @Inject constructor(
     private val getWatchListUseCase: GetWatchListUseCase,
-    private val removeMovieFromWatchListUseCase: RemoveMovieFromWatchListUseCase
+    private val removeMovieFromWatchListUseCase: RemoveMovieFromWatchListUseCase,
+    private val markWatchListMovieUseCase: MarkWatchListMovieUseCase
 ) : ViewModel() {
-    private val _movieResult = MutableLiveData<List<Movie>>()
-    val movieResult: LiveData<List<Movie>>
+    private val _movieResult = MutableLiveData<List<WatchListMovie>>()
+    val movieResult: LiveData<List<WatchListMovie>>
         get() = _movieResult
 
     fun getWatchListMovies() {
@@ -27,9 +29,15 @@ class WatchListViewModel @Inject constructor(
         }
     }
 
-    fun removeFromWatchList(movie: Movie) {
+    fun removeFromWatchList(movie: WatchListMovie) {
         viewModelScope.launch {
-            removeMovieFromWatchListUseCase.invoke(movie)
+            removeMovieFromWatchListUseCase.invoke(movie.id)
+        }
+    }
+
+    fun markWatchListMovie(movie: WatchListMovie) {
+        viewModelScope.launch {
+            markWatchListMovieUseCase.invoke(movie)
         }
     }
 }

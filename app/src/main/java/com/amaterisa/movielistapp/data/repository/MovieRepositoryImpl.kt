@@ -2,20 +2,23 @@ package com.amaterisa.movielistapp.data.repository
 
 import com.amaterisa.movielistapp.data.mapper.GenreMapper
 import com.amaterisa.movielistapp.data.mapper.MovieMapper
+import com.amaterisa.movielistapp.data.source.local.dao.WatchListMovieDao
 import com.amaterisa.movielistapp.data.source.remote.MovieApiService
+import com.amaterisa.movielistapp.domain.common.Result
+import com.amaterisa.movielistapp.domain.model.Genre
 import com.amaterisa.movielistapp.domain.model.Movie
+import com.amaterisa.movielistapp.domain.model.WatchListMovie
 import com.amaterisa.movielistapp.domain.repository.MovieRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
-import com.amaterisa.movielistapp.domain.common.Result
-import com.amaterisa.movielistapp.domain.model.Genre
 import javax.inject.Inject
 
 class MovieRepositoryImpl @Inject constructor(
-    private val movieApiService: MovieApiService
-): MovieRepository {
+    private val movieApiService: MovieApiService,
+    private val watchListMovieDao: WatchListMovieDao
+) : MovieRepository {
 
     override fun getPopularMovies(): Flow<List<Movie>> {
         return flow {
@@ -27,16 +30,22 @@ class MovieRepositoryImpl @Inject constructor(
     }
 
     override suspend fun saveMovieToWatchList(movie: Movie) {
-        //TODO: apply persistence to saved data
-        movie.isInWatchList = !movie.isInWatchList
+        val entity = MovieMapper.getWatchListMovieEntityFromMovie(movie)
+        watchListMovieDao.insert(entity)
     }
 
-    override suspend fun getWatchList(): List<Movie> {
-        TODO("Not yet implemented")
+    override suspend fun getWatchList(): List<WatchListMovie> {
+        val entities = watchListMovieDao.getAllMovies()
+        return entities.map { MovieMapper.getWatchListMovieFromEntity(it) }
     }
 
-    override suspend fun removeMovieFromWatchList(movie: Movie) {
-        TODO("Not yet implemented")
+    override suspend fun removeMovieFromWatchList(id: Long) {
+        watchListMovieDao.deleteById(id)
+    }
+
+    override suspend fun markWatchListMovie(movie: WatchListMovie) {
+        movie.markWatched = !movie.markWatched
+        watchListMovieDao.updateMarkedStatus(movie.id, movie.markWatched)
     }
 
     override fun getGenreList(): Flow<List<Genre>> {

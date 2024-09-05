@@ -15,6 +15,9 @@
     <dimen name="watch_list_img_width">94dp</dimen>
     <dimen name="watch_list_img_height">140dp</dimen>
     <dimen name="watch_list_txt_height">56dp</dimen>
+    <dimen name="img_button_size">48dp</dimen>
+    <dimen name="icon_padding">4dp</dimen>
+    <dimen name="button_height">40dp</dimen>
 
     <dimen name="title_size">22sp</dimen>
     <dimen name="normal_size">14sp</dimen>

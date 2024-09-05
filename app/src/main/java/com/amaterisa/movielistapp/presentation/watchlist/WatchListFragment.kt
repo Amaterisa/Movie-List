@@ -8,9 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.amaterisa.movielistapp.R
 import com.amaterisa.movielistapp.databinding.FragmentWatchListBinding
-import com.amaterisa.movielistapp.domain.model.Movie
+import com.amaterisa.movielistapp.domain.model.WatchListMovie
 import com.amaterisa.movielistapp.presentation.adapter.LinearItemDecoration
-import com.amaterisa.movielistapp.presentation.adapter.MovieListAdapter
 import com.amaterisa.movielistapp.utils.ViewUtils.toVisibility
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,7 +27,10 @@ class WatchListFragment : Fragment() {
     }
 
     private val watchListAdapter: WatchListAdapter by lazy {
-        WatchListAdapter { movie -> removeFromWatchList(movie) }
+        WatchListAdapter(
+            { movie -> removeFromWatchList(movie) },
+            { movie -> markMovie(movie) }
+        )
     }
 
     override fun onCreateView(
@@ -42,14 +44,18 @@ class WatchListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupBinding()
         initObservers()
+    }
+
+    override fun onResume() {
+        super.onResume()
         manageViews(isListEmpty = true, isLoading = true)
-        //viewModel.getWatchListMovies()
+        viewModel.getWatchListMovies()
     }
 
     private fun setupBinding() {
         binding.run {
             moviesRv.adapter = watchListAdapter
-            val spaceInPixels = resources.getDimensionPixelSize(R.dimen.default_padding)
+            val spaceInPixels = resources.getDimensionPixelSize(R.dimen.half_default_padding)
             moviesRv.addItemDecoration(LinearItemDecoration(spaceInPixels, true))
         }
     }
@@ -69,8 +75,12 @@ class WatchListFragment : Fragment() {
         }
     }
 
-    private fun removeFromWatchList(movie: Movie) {
+    private fun removeFromWatchList(movie: WatchListMovie) {
         watchListAdapter.removeMovie(movie)
         viewModel.removeFromWatchList(movie)
+    }
+
+    private fun markMovie(movie: WatchListMovie) {
+        viewModel.markWatchListMovie(movie)
     }
 }

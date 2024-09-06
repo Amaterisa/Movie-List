@@ -23,6 +23,10 @@
         <action
             android:id="@+id/action_home_to_popular"
             app:destination="@id/nav_popular" />
+
+        <action
+            android:id="@+id/action_home_to_search"
+            app:destination="@id/nav_search" />
     </fragment>
 
     <fragment
@@ -41,5 +45,10 @@
         android:id="@+id/nav_movie_details"
         android:name="com.amaterisa.movielistapp.presentation.moviedetails.MovieDetailsFragment"
         android:label="@string/movie_details_label"
-        tools:layout="@layout/fragment_movie_details" />
+        tools:layout="@layout/fragment_movie_details" >
+    <argument
+        android:name="movieId"
+        app:argType="long"
+        android:defaultValue="0L" />
+    </fragment>
 </navigation>

@@ -1,14 +1,14 @@
 package com.amaterisa.movielistapp.data.mapper
 
-import com.amaterisa.movielistapp.data.source.local.entity.WatchListMovieEntity
+import com.amaterisa.movielistapp.data.source.local.entity.MovieEntity
+import com.amaterisa.movielistapp.data.source.remote.movie.MovieDetailsResponse
 import com.amaterisa.movielistapp.data.source.remote.movie.MovieListResponse
 import com.amaterisa.movielistapp.domain.model.Movie
-import com.amaterisa.movielistapp.domain.model.WatchListMovie
 import com.amaterisa.movielistapp.utils.ListUtils.transformListToString
 import com.amaterisa.movielistapp.utils.ListUtils.transformStringToList
 
 object MovieMapper {
-    fun getMovieFromResponse(movieListResponse: MovieListResponse): List<Movie> {
+    fun getMovieFromResponse(movieListResponse: MovieListResponse, isTrending: Boolean = false): List<Movie> {
         return movieListResponse.results.map {
             Movie(
                 id = it.id,
@@ -19,13 +19,14 @@ object MovieMapper {
                 releaseDate = it.releaseDate,
                 voteAverage = it.voteAverage,
                 genreIds = it.genreIds,
+                isTrending = isTrending
             )
         }
     }
 
-    fun getWatchListMovieEntityFromMovie(movie: Movie): WatchListMovieEntity {
+    fun getMovieEntityFromMovie(movie: Movie): MovieEntity {
         return movie.let {
-            WatchListMovieEntity(
+            MovieEntity(
                 id = it.id,
                 title = it.title,
                 overview = it.overview,
@@ -34,13 +35,15 @@ object MovieMapper {
                 releaseDate = it.releaseDate,
                 voteAverage = it.voteAverage,
                 genreIds = transformListToString(it.genreIds),
-                markWatched = false
+                isInWatchList = it.isInWatchList,
+                markWatched = it.markWatched,
+                isTrending = it.isTrending
             )
         }
     }
 
-    fun getMovieFromEntity(watchListMovieEntity: WatchListMovieEntity): Movie {
-        return watchListMovieEntity.let {
+    fun getMovieFromEntity(movieEntity: MovieEntity): Movie {
+        return movieEntity.let {
             Movie(
                 id = it.id,
                 title = it.title,
@@ -50,14 +53,17 @@ object MovieMapper {
                 releaseDate = it.releaseDate,
                 voteAverage = it.voteAverage,
                 genreIds = transformStringToList(it.genreIds),
-                isInWatchList = true
+                isInWatchList = it.isInWatchList,
+                markWatched = it.markWatched,
+                isTrending = it.isTrending
             )
         }
     }
 
-    fun getWatchListMovieFromEntity(watchListMovieEntity: WatchListMovieEntity): WatchListMovie {
-        return watchListMovieEntity.let {
-            WatchListMovie(
+    fun getMovieFromMovieDetailsResponse(movieDetailsResponse: MovieDetailsResponse): Movie {
+        val genreIds = movieDetailsResponse.genres.map { it.id }
+        return movieDetailsResponse.let {
+            Movie(
                 id = it.id,
                 title = it.title,
                 overview = it.overview,
@@ -65,24 +71,7 @@ object MovieMapper {
                 backdropPath = it.backdropPath,
                 releaseDate = it.releaseDate,
                 voteAverage = it.voteAverage,
-                genreIds = transformStringToList(it.genreIds),
-                markWatched = it.markWatched
-            )
-        }
-    }
-
-    fun getEntityFromWatchListMovie(watchListMovie: WatchListMovie): WatchListMovieEntity {
-        return watchListMovie.let {
-            WatchListMovieEntity(
-                id = it.id,
-                title = it.title,
-                overview = it.overview,
-                posterPath = it.posterPath,
-                backdropPath = it.backdropPath,
-                releaseDate = it.releaseDate,
-                voteAverage = it.voteAverage,
-                genreIds = transformListToString(it.genreIds),
-                markWatched = it.markWatched
+                genreIds = genreIds
             )
         }
     }

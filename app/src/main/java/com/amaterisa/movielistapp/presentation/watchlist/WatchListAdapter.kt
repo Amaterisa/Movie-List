@@ -6,23 +6,25 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.amaterisa.movielistapp.R
 import com.amaterisa.movielistapp.databinding.ItemWatchListMovieBinding
-import com.amaterisa.movielistapp.domain.model.WatchListMovie
+import com.amaterisa.movielistapp.domain.model.Movie
 import com.amaterisa.movielistapp.utils.MovieUtils.getImageUrl
 import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
 
 class WatchListAdapter(
-    private val onRemoveClick: (WatchListMovie) -> Unit,
-    private val onMarkClick: (WatchListMovie) -> Unit
+    private val onRemoveClick: (Movie) -> Unit,
+    private val onMarkClick: (Movie) -> Unit,
+    private val onItemClick: (Long) -> Unit
 ) : RecyclerView.Adapter<WatchListAdapter.MovieViewHolder>() {
-    private var movieList: MutableList<WatchListMovie> = mutableListOf()
+    private var movieList: MutableList<Movie> = mutableListOf()
 
     class MovieViewHolder(private val binding: ItemWatchListMovieBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
-            movie: WatchListMovie,
-            onRemoveClick: (WatchListMovie) -> Unit,
-            onMarkClick: (WatchListMovie) -> Unit
+            movie: Movie,
+            onRemoveClick: (Movie) -> Unit,
+            onMarkClick: (Movie) -> Unit,
+            onItemClick: (Long) -> Unit
         ) {
             binding.run {
                 val url = getImageUrl(300, movie.posterPath)
@@ -35,6 +37,8 @@ class WatchListAdapter(
                 Glide.with(root.context)
                     .load(url)
                     .into(movieImageView)
+
+                root.setOnClickListener { onItemClick(movie.id) }
 
                 btnRemove.setOnClickListener {
                     onRemoveClick(movie)
@@ -80,24 +84,25 @@ class WatchListAdapter(
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        holder.bind(movieList[position], onRemoveClick, onMarkClick)
+        holder.bind(movieList[position], onRemoveClick, onMarkClick, onItemClick)
     }
 
     override fun getItemCount(): Int {
         return movieList.size
     }
 
-    fun setMovies(movies: List<WatchListMovie>) {
+    fun setMovies(movies: List<Movie>) {
         movieList.clear()
         movieList.addAll(movies)
         notifyDataSetChanged()
     }
 
-    fun removeMovie(movie: WatchListMovie) {
+    fun removeMovie(movie: Movie): Int {
         val position = movieList.indexOf(movie)
         if (position >= 0) {
             movieList.removeAt(position)
             notifyItemRemoved(position)
         }
+        return movieList.size
     }
 }

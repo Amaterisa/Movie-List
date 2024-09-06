@@ -15,4 +15,11 @@ abstract class BaseFragment: Fragment() {
     }
 
     abstract fun fragmentType(): FragmentConfig
+
+    fun goToMovieDetails(id: Long) {
+        if (requireActivity() is IMainActivity) {
+            val mainActivity = requireActivity() as IMainActivity
+            mainActivity.goToMovieDetails(id)
+        }
+    }
 }

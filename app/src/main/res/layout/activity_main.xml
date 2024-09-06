@@ -11,17 +11,6 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
 
-    <ImageButton
-        android:id="@+id/back_btn"
-        android:layout_width="@dimen/img_button_size"
-        android:layout_height="@dimen/img_button_size"
-        android:src="@drawable/ic_back"
-        android:background="@color/transparent"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="@id/toolbar"
-        app:layout_constraintTop_toTopOf="@id/toolbar"
-        app:layout_constraintBottom_toBottomOf="@id/toolbar" />
-
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
         android:layout_width="match_parent"

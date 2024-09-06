@@ -31,7 +31,7 @@ class PopularMoviesFragment : AddWatchListBaseFragment<PopularMoviesViewModel>()
         MovieListAdapter(
             resources.getDimensionPixelSize(R.dimen.top_movie_width),
             resources.getDimensionPixelSize(R.dimen.top_movie_height),
-            {},
+            { id -> goToMovieDetails(id) },
             { movie -> onAddToWatchList(movie) })
     }
 

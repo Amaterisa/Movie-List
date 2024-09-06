@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide
 class MovieListAdapter(
     private val imageWidth: Int,
     private val imageHeight: Int,
-    private val onItemClick: (Movie) -> Unit,
+    private val onItemClick: (Long) -> Unit,
     private val onWatchlistClick: (Movie) -> Unit
 ) : RecyclerView.Adapter<MovieListAdapter.MovieViewHolder>() {
     private var movieList: MutableList<Movie> = mutableListOf()
@@ -25,7 +25,7 @@ class MovieListAdapter(
             movie: Movie,
             imageWidth: Int,
             imageHeight: Int,
-            onItemClick: (Movie) -> Unit,
+            onItemClick: (Long) -> Unit,
             onWatchlistClick: (Movie) -> Unit
         ) {
             val url = getImageUrl(300, movie.posterPath)
@@ -42,7 +42,7 @@ class MovieListAdapter(
 
                 setButtonDrawable(addBtn, movie)
 
-                root.setOnClickListener { onItemClick(movie) }
+                root.setOnClickListener { onItemClick(movie.id) }
 
                 addBtn.setOnClickListener {
                     onWatchlistClick(movie)

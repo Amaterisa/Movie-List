@@ -2,9 +2,9 @@ package com.amaterisa.movielistapp.presentation.main
 
 import android.os.Bundle
 import android.view.Menu
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
@@ -46,30 +46,21 @@ class MainActivity : AppCompatActivity(), IMainActivity {
 
         setSupportActionBar(binding.toolbar.toolbarLayout)
         setupNavigation()
-        setupBinding()
 
         if (savedInstanceState == null) {
-            loadFragment(FragmentConfig.HOME)
+            //loadFragment(FragmentConfig.HOME)
         }
 
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                onBack()
-            }
-        })
+//        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+//            override fun handleOnBackPressed() {
+//                //onBack()
+//            }
+//        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
         return true
-    }
-
-    private fun setupBinding() {
-        binding.run {
-            backBtn.setOnClickListener {
-                onBackPressedDispatcher.onBackPressed()
-            }
-        }
     }
 
     private fun setupNavigation() {
@@ -81,8 +72,7 @@ class MainActivity : AppCompatActivity(), IMainActivity {
                 setOf(
                     R.id.nav_home,
                     R.id.nav_popular,
-                    R.id.nav_list,
-                    R.id.nav_search
+                    R.id.nav_list
                 )
             )
 
@@ -99,17 +89,20 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         bottomNav?.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_home -> {
-                    loadFragment(FragmentConfig.HOME)
+                    navController?.navigate(R.id.nav_home)
+                    //loadFragment(FragmentConfig.HOME)
                     true
                 }
 
                 R.id.nav_popular -> {
-                    loadFragment(FragmentConfig.POPULAR_MOVIES)
+                    navController?.navigate(R.id.nav_popular)
+                    //loadFragment(FragmentConfig.POPULAR_MOVIES)
                     true
                 }
 
                 R.id.nav_list -> {
-                    loadFragment(FragmentConfig.WATCH_LIST)
+                    navController?.navigate(R.id.nav_list)
+                    //loadFragment(FragmentConfig.WATCH_LIST)
                     true
                 }
 
@@ -119,8 +112,9 @@ class MainActivity : AppCompatActivity(), IMainActivity {
 
         binding.toolbar.toolbarLayout.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.menu_search -> {
-                    loadFragment(FragmentConfig.SEARCH, true)
+                R.id.nav_search -> {
+                    goToSearch()
+                    //loadFragment(FragmentConfig.SEARCH, true)
                     true
                 }
 
@@ -164,15 +158,14 @@ class MainActivity : AppCompatActivity(), IMainActivity {
     }
 
     private fun showBackButton(show: Boolean) {
-//        supportActionBar?.setHomeButtonEnabled(show)
-//        supportActionBar?.setDisplayHomeAsUpEnabled(show)
-//        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
-//        supportActionBar?.setDisplayHomeAsUpEnabled(show)
-        binding.backBtn.toVisibility(show)
+        supportActionBar?.setHomeButtonEnabled(show)
+        supportActionBar?.setDisplayHomeAsUpEnabled(show)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+        supportActionBar?.setDisplayHomeAsUpEnabled(show)
     }
 
     private fun showMenuOptions(show: Boolean) {
-        val searchItem = binding.toolbar.toolbarLayout.menu?.findItem(R.id.menu_search)
+        val searchItem = binding.toolbar.toolbarLayout.menu?.findItem(R.id.nav_search)
         searchItem?.isVisible = show
     }
 
@@ -203,6 +196,15 @@ class MainActivity : AppCompatActivity(), IMainActivity {
                 }
             }
         }
+    }
+
+    override fun goToMovieDetails(id: Long) {
+        val bundle = bundleOf("movieId" to id)
+        navController?.navigate(R.id.nav_movie_details, bundle)
+    }
+
+    fun goToSearch() {
+        navController?.navigate(R.id.nav_search)
     }
 
     private fun onBack() {

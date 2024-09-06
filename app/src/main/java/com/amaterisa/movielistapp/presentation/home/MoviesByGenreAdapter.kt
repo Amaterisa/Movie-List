@@ -13,7 +13,7 @@ import com.amaterisa.movielistapp.presentation.adapter.MovieListAdapter
 class MoviesByGenreAdapter(
     private val imageWidth: Int,
     private val imageHeight: Int,
-    private val onItemClick: (Movie) -> Unit,
+    private val onItemClick: (Long) -> Unit,
     private val onWatchlistClick: (Movie) -> Unit
 ) : RecyclerView.Adapter<MoviesByGenreAdapter.MoviesByGenreViewHolder>() {
     private var moviesByGenre: MutableMap<String, MutableList<Movie>> = mutableMapOf()
@@ -34,7 +34,7 @@ class MoviesByGenreAdapter(
             movies: List<Movie>,
             imageWidth: Int,
             imageHeight: Int,
-            onItemClick: (Movie) -> Unit,
+            onItemClick: (Long) -> Unit,
             onWatchlistClick: (Movie) -> Unit,
         ) {
             binding.run {

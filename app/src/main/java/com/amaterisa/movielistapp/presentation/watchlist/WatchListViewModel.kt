@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.amaterisa.movielistapp.domain.model.WatchListMovie
+import com.amaterisa.movielistapp.domain.model.Movie
 import com.amaterisa.movielistapp.domain.usecase.GetWatchListUseCase
 import com.amaterisa.movielistapp.domain.usecase.MarkWatchListMovieUseCase
 import com.amaterisa.movielistapp.domain.usecase.RemoveMovieFromWatchListUseCase
@@ -18,24 +18,25 @@ class WatchListViewModel @Inject constructor(
     private val removeMovieFromWatchListUseCase: RemoveMovieFromWatchListUseCase,
     private val markWatchListMovieUseCase: MarkWatchListMovieUseCase
 ) : ViewModel() {
-    private val _movieResult = MutableLiveData<List<WatchListMovie>>()
-    val movieResult: LiveData<List<WatchListMovie>>
+    private val _movieResult = MutableLiveData<List<Movie>>()
+    val movieResult: LiveData<List<Movie>>
         get() = _movieResult
 
     fun getWatchListMovies() {
         viewModelScope.launch {
-            val movies = getWatchListUseCase.invoke()
-            _movieResult.postValue(movies)
+            getWatchListUseCase.invoke().collect {
+                _movieResult.postValue(it)
+            }
         }
     }
 
-    fun removeFromWatchList(movie: WatchListMovie) {
+    fun removeFromWatchList(movie: Movie) {
         viewModelScope.launch {
             removeMovieFromWatchListUseCase.invoke(movie.id)
         }
     }
 
-    fun markWatchListMovie(movie: WatchListMovie) {
+    fun markWatchListMovie(movie: Movie) {
         viewModelScope.launch {
             markWatchListMovieUseCase.invoke(movie)
         }

@@ -4,15 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.amaterisa.movielistapp.R
 import com.amaterisa.movielistapp.databinding.FragmentWatchListBinding
-import com.amaterisa.movielistapp.domain.model.WatchListMovie
+import com.amaterisa.movielistapp.domain.model.Movie
 import com.amaterisa.movielistapp.presentation.adapter.LinearItemDecoration
 import com.amaterisa.movielistapp.presentation.base.BaseFragment
 import com.amaterisa.movielistapp.presentation.main.FragmentConfig
+import com.amaterisa.movielistapp.presentation.main.MainActivity
 import com.amaterisa.movielistapp.utils.ViewUtils.toVisibility
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -32,7 +32,8 @@ class WatchListFragment : BaseFragment() {
     private val watchListAdapter: WatchListAdapter by lazy {
         WatchListAdapter(
             { movie -> removeFromWatchList(movie) },
-            { movie -> markMovie(movie) }
+            { movie -> markMovie(movie) },
+            { id -> goToMovieDetails(id) }
         )
     }
 
@@ -78,6 +79,10 @@ class WatchListFragment : BaseFragment() {
             btnTop.setOnClickListener {
                 moviesRv.smoothScrollToPosition(0)
             }
+
+            btnSearch.setOnClickListener {
+                openSearch()
+            }
         }
     }
 
@@ -96,12 +101,20 @@ class WatchListFragment : BaseFragment() {
         }
     }
 
-    private fun removeFromWatchList(movie: WatchListMovie) {
-        watchListAdapter.removeMovie(movie)
+    private fun removeFromWatchList(movie: Movie) {
+        val listSize = watchListAdapter.removeMovie(movie)
         viewModel.removeFromWatchList(movie)
+        manageViews(listSize <= 0)
     }
 
-    private fun markMovie(movie: WatchListMovie) {
+    private fun markMovie(movie: Movie) {
         viewModel.markWatchListMovie(movie)
+    }
+
+    private fun openSearch() {
+        if (requireActivity() is MainActivity) {
+            val mainActivity = requireActivity() as MainActivity
+            mainActivity.goToSearch()
+        }
     }
 }

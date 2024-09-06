@@ -31,7 +31,7 @@ class HomeFragment : AddWatchListBaseFragment<HomeViewModel>() {
         MoviesByGenreAdapter(
             resources.getDimensionPixelSize(R.dimen.home_movie_width),
             resources.getDimensionPixelSize(R.dimen.home_movie_height),
-            {},
+            { id -> goToMovieDetails(id) },
             { movie -> onAddToWatchList(movie) })
     }
 

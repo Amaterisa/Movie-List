@@ -4,10 +4,16 @@
     <string name="search_label">Search</string>
     <string name="movies_label">Movies</string>
     <string name="watch_list_label">My list</string>
+    <string name="add_watch_list_label">Add to my list</string>
+    <string name="added_watch_list_label">Added to my list</string>
     <string name="movie_details_label">Movie Details</string>
     <string name="search_button">Search for movies</string>
     <string name="watched_label">Watched</string>
     <string name="mark_watched_label">Mark as watched</string>
+    <string name="release_date_label">Release date</string>
+    <string name="score_label">Score</string>
+    <string name="score_value">%s/10</string>
+    <string name="genres_label">Genres</string>
     <string name="no_items_title">Wooo, there’s nothing here!</string>
     <string name="no_items_description">You don’t have a list yet, but don’t worry! You can add movies to your list at anytime by clicking the add to list icon on the movie’s card or description page.</string>
 </resources>

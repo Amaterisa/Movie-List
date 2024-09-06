@@ -11,11 +11,13 @@ import com.amaterisa.movielistapp.R
 import com.amaterisa.movielistapp.databinding.FragmentWatchListBinding
 import com.amaterisa.movielistapp.domain.model.WatchListMovie
 import com.amaterisa.movielistapp.presentation.adapter.LinearItemDecoration
+import com.amaterisa.movielistapp.presentation.base.BaseFragment
+import com.amaterisa.movielistapp.presentation.main.FragmentConfig
 import com.amaterisa.movielistapp.utils.ViewUtils.toVisibility
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class WatchListFragment : Fragment() {
+class WatchListFragment : BaseFragment() {
 
     companion object {
         const val TAG = "WatchListFragment"
@@ -33,6 +35,8 @@ class WatchListFragment : Fragment() {
             { movie -> markMovie(movie) }
         )
     }
+
+    override fun fragmentType() = FragmentConfig.WATCH_LIST
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

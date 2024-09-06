@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.amaterisa.movielistapp.R
 import com.amaterisa.movielistapp.databinding.ItemWatchListMovieBinding
 import com.amaterisa.movielistapp.domain.model.WatchListMovie
+import com.amaterisa.movielistapp.utils.MovieUtils.getImageUrl
 import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
 
@@ -24,7 +25,7 @@ class WatchListAdapter(
             onMarkClick: (WatchListMovie) -> Unit
         ) {
             binding.run {
-                val url = "https://image.tmdb.org/t/p/w300${movie.posterPath}"
+                val url = getImageUrl(300, movie.posterPath)
 
                 txvTitle.text = movie.title
                 txvDescription.text = movie.overview

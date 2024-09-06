@@ -8,10 +8,8 @@ import com.amaterisa.movielistapp.domain.model.Movie
 import com.amaterisa.movielistapp.domain.usecase.GetGenreUseCase
 import com.amaterisa.movielistapp.domain.usecase.GetMoviesByGenreUseCase
 import com.amaterisa.movielistapp.domain.usecase.SaveMovieToWatchListUseCase
-import com.amaterisa.movielistapp.presentation.base.BaseViewModel
+import com.amaterisa.movielistapp.presentation.base.AddWatchListBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,7 +18,7 @@ class HomeViewModel @Inject constructor(
     private val getGenreUseCase: GetGenreUseCase,
     private val getMoviesByGetGenreUseCase: GetMoviesByGenreUseCase,
     saveMovieToWatchListUseCase: SaveMovieToWatchListUseCase
-) : BaseViewModel(saveMovieToWatchListUseCase) {
+) : AddWatchListBaseViewModel(saveMovieToWatchListUseCase) {
     companion object {
         private const val TAG = "HomeViewModel"
     }

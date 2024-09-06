@@ -10,12 +10,13 @@ import com.amaterisa.movielistapp.R
 import com.amaterisa.movielistapp.databinding.FragmentPopularMoviesBinding
 import com.amaterisa.movielistapp.presentation.adapter.GridSpaceItemDecoration
 import com.amaterisa.movielistapp.presentation.adapter.MovieListAdapter
-import com.amaterisa.movielistapp.presentation.base.BaseFragment
+import com.amaterisa.movielistapp.presentation.base.AddWatchListBaseFragment
+import com.amaterisa.movielistapp.presentation.main.FragmentConfig
 import com.amaterisa.movielistapp.utils.ViewUtils.toVisibility
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PopularMoviesFragment : BaseFragment<PopularMoviesViewModel>() {
+class PopularMoviesFragment : AddWatchListBaseFragment<PopularMoviesViewModel>() {
     companion object {
         const val TAG = "PopularMoviesFragment"
     }
@@ -33,6 +34,8 @@ class PopularMoviesFragment : BaseFragment<PopularMoviesViewModel>() {
             {},
             { movie -> onAddToWatchList(movie) })
     }
+
+    override fun fragmentType() = FragmentConfig.POPULAR_MOVIES
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

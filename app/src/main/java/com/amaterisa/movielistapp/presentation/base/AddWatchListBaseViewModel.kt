@@ -6,7 +6,7 @@ import com.amaterisa.movielistapp.domain.model.Movie
 import com.amaterisa.movielistapp.domain.usecase.SaveMovieToWatchListUseCase
 import kotlinx.coroutines.launch
 
-abstract class BaseViewModel(
+abstract class AddWatchListBaseViewModel(
     private val saveMovieToWatchListUseCase: SaveMovieToWatchListUseCase
 ): ViewModel() {
     fun saveToWatchList(movie: Movie) {

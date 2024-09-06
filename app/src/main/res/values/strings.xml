@@ -4,6 +4,7 @@
     <string name="search_label">Search</string>
     <string name="movies_label">Movies</string>
     <string name="watch_list_label">My list</string>
+    <string name="movie_details_label">Movie Details</string>
     <string name="search_button">Search for movies</string>
     <string name="watched_label">Watched</string>
     <string name="mark_watched_label">Mark as watched</string>

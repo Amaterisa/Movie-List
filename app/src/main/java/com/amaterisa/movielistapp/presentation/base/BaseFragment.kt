@@ -1,15 +1,18 @@
 package com.amaterisa.movielistapp.presentation.base
 
-import android.util.Log
 import androidx.fragment.app.Fragment
-import com.amaterisa.movielistapp.domain.model.Movie
-import com.amaterisa.movielistapp.presentation.popularmovies.PopularMoviesFragment.Companion.TAG
+import com.amaterisa.movielistapp.presentation.main.FragmentConfig
+import com.amaterisa.movielistapp.presentation.main.IMainActivity
 
-abstract class BaseFragment<VM : BaseViewModel> : Fragment() {
-    abstract val viewModel: VM
+abstract class BaseFragment: Fragment() {
 
-    open fun onAddToWatchList(movie: Movie) {
-        Log.d(TAG, "Add movie to watchlist: $movie")
-        viewModel.saveToWatchList(movie)
+    override fun onResume() {
+        super.onResume()
+        if (requireActivity() is IMainActivity) {
+            val mainActivity = requireActivity() as IMainActivity
+            mainActivity.setupNavigationLayout(fragmentType())
+        }
     }
+
+    abstract fun fragmentType(): FragmentConfig
 }

@@ -8,14 +8,14 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.amaterisa.movielistapp.R
 import com.amaterisa.movielistapp.databinding.FragmentHomeBinding
-import com.amaterisa.movielistapp.domain.model.Movie
 import com.amaterisa.movielistapp.presentation.adapter.LinearItemDecoration
-import com.amaterisa.movielistapp.presentation.base.BaseFragment
+import com.amaterisa.movielistapp.presentation.base.AddWatchListBaseFragment
+import com.amaterisa.movielistapp.presentation.main.FragmentConfig
 import com.amaterisa.movielistapp.utils.ViewUtils.toVisibility
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment<HomeViewModel>() {
+class HomeFragment : AddWatchListBaseFragment<HomeViewModel>() {
 
     companion object {
         const val TAG = "HomeFragment"
@@ -35,6 +35,8 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
             { movie -> onAddToWatchList(movie) })
     }
 
+    override fun fragmentType() = FragmentConfig.HOME
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,12 +50,6 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
         setupBinding()
         viewModel.getGenreList()
         manageViews(true)
-    }
-
-    override fun onAddToWatchList(movie: Movie) {
-        super.onAddToWatchList(movie)
-        //moviesByGenreAdapter.addToWatchList(movie)
-
     }
 
     private fun initObservers() {

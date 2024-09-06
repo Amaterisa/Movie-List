@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.amaterisa.movielistapp.R
 import com.amaterisa.movielistapp.databinding.ItemMovieBinding
 import com.amaterisa.movielistapp.domain.model.Movie
+import com.amaterisa.movielistapp.utils.MovieUtils.getImageUrl
 import com.bumptech.glide.Glide
 
 class MovieListAdapter(
@@ -27,7 +28,7 @@ class MovieListAdapter(
             onItemClick: (Movie) -> Unit,
             onWatchlistClick: (Movie) -> Unit
         ) {
-            val url = "https://image.tmdb.org/t/p/w300${movie.posterPath}"
+            val url = getImageUrl(300, movie.posterPath)
 
             binding.run {
                 val layoutParams = movieImageView.layoutParams

@@ -86,14 +86,4 @@ class MoviesByGenreAdapter(
             notifyItemChanged(genres.indexOf(genre))
         }
     }
-
-    fun addToWatchList(movie: Movie) {
-        for ((genre, movies) in moviesByGenre) {
-            val index = movies.indexOfFirst { it.id == movie.id }
-            if (index != -1) {
-                movies[index] = movie
-                notifyItemChanged(genres.indexOf(genre))
-            }
-        }
-    }
 }

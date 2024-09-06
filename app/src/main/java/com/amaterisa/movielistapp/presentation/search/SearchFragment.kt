@@ -32,4 +32,24 @@ class SearchFragment : BaseFragment() {
     ): View {
         return binding.root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupBinding()
+        initObservers()
+    }
+
+    private fun setupBinding() {
+        binding.run {
+
+        }
+    }
+
+    private fun initObservers() {
+        viewModel.searchMovie("star wars")
+
+        viewModel.movieResult.observe(viewLifecycleOwner) {
+            it
+        }
+    }
 }

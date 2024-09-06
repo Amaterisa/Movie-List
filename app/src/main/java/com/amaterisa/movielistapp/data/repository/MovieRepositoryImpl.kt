@@ -1,5 +1,6 @@
 package com.amaterisa.movielistapp.data.repository
 
+import android.util.Log
 import com.amaterisa.movielistapp.data.mapper.GenreMapper
 import com.amaterisa.movielistapp.data.mapper.MovieMapper
 import com.amaterisa.movielistapp.data.source.local.dao.GenreDao
@@ -13,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -22,6 +24,10 @@ class MovieRepositoryImpl @Inject constructor(
     private val movieDao: MovieDao,
     private val genreDao: GenreDao
 ) : MovieRepository {
+
+    companion object {
+        const val TAG = "MovieRepository"
+    }
 
     override fun getPopularMovies(): Flow<List<Movie>> {
         return flow {
@@ -123,6 +129,17 @@ class MovieRepositoryImpl @Inject constructor(
         return flow {
             emit(GenreMapper.getGenreListFromEntity(genreDao.getAll()))
         }
+    }
+
+    override fun searchMovie(name: String): Flow<List<Movie>> {
+        return flow {
+            try {
+                val response = movieApiService.searchMovie(name)
+                emit(MovieMapper.getMovieFromResponse(response))
+            } catch (e: Exception) {
+                Log.d(TAG, "error $e")
+            }
+        }.flowOn(Dispatchers.IO)
     }
 
     private suspend fun getPopularMoviesRemote(): Result<List<Movie>> =

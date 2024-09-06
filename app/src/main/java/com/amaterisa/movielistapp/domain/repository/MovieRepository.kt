@@ -24,4 +24,6 @@ interface MovieRepository {
     suspend fun saveMovies(movies: List<Movie>)
 
     fun getAllGenres(): Flow<List<Genre>>
+
+    fun searchMovie(name: String): Flow<List<Movie>>
 }

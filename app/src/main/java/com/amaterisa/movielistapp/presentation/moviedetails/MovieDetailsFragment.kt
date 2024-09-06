@@ -13,6 +13,7 @@ import com.amaterisa.movielistapp.domain.model.Movie
 import com.amaterisa.movielistapp.presentation.base.AddWatchListBaseFragment
 import com.amaterisa.movielistapp.presentation.base.BaseFragment
 import com.amaterisa.movielistapp.presentation.main.FragmentConfig
+import com.amaterisa.movielistapp.utils.MovieUtils
 import com.amaterisa.movielistapp.utils.MovieUtils.getImageUrl
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
@@ -46,15 +47,23 @@ class MovieDetailsFragment : AddWatchListBaseFragment<MovieDetailsViewModel>() {
 
         val movieId = arguments?.getLong("movieId")
         movieId?.let { viewModel.getMovieDetails(it) }
-
     }
 
     private fun initObservers() {
         viewModel.movieResult.observe(viewLifecycleOwner) {
+            viewModel.getMovieGenres()
             if (it != null) {
                 setupBinding(it)
             } else {
 
+            }
+        }
+
+        viewModel.genresResult.observe(viewLifecycleOwner) { genres ->
+            val movie = viewModel.movieResult.value
+            movie?.let {
+                val genresNames = MovieUtils.getGenreNames(it.genreIds, genres)
+                binding.genresValue.text = genresNames
             }
         }
     }

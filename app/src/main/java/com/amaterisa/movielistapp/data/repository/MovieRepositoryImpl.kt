@@ -2,6 +2,7 @@ package com.amaterisa.movielistapp.data.repository
 
 import com.amaterisa.movielistapp.data.mapper.GenreMapper
 import com.amaterisa.movielistapp.data.mapper.MovieMapper
+import com.amaterisa.movielistapp.data.source.local.dao.GenreDao
 import com.amaterisa.movielistapp.data.source.local.dao.MovieDao
 import com.amaterisa.movielistapp.data.source.remote.MovieApiService
 import com.amaterisa.movielistapp.domain.common.Result
@@ -18,7 +19,8 @@ import javax.inject.Inject
 
 class MovieRepositoryImpl @Inject constructor(
     private val movieApiService: MovieApiService,
-    private val movieDao: MovieDao
+    private val movieDao: MovieDao,
+    private val genreDao: GenreDao
 ) : MovieRepository {
 
     override fun getPopularMovies(): Flow<List<Movie>> {
@@ -70,9 +72,15 @@ class MovieRepositoryImpl @Inject constructor(
 
     override fun getGenreList(): Flow<List<Genre>> {
         return flow {
-            val result = getGenreListRemote()
-            if (result is Result.Success) {
-                emit(result.data)
+            val genreEntities = genreDao.getAll()
+            if (genreEntities.isNotEmpty()) {
+                emit(GenreMapper.getGenreListFromEntity(genreEntities))
+            } else {
+                val result = getGenreListRemote()
+                if (result is Result.Success) {
+                    saveGenres(result.data)
+                    emit(result.data)
+                }
             }
         }
     }
@@ -108,6 +116,12 @@ class MovieRepositoryImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             val entities = movies.map { MovieMapper.getMovieEntityFromMovie(it) }
             movieDao.insertAll(entities)
+        }
+    }
+
+    override fun getAllGenres(): Flow<List<Genre>> {
+        return flow {
+            emit(GenreMapper.getGenreListFromEntity(genreDao.getAll()))
         }
     }
 
@@ -154,4 +168,8 @@ class MovieRepositoryImpl @Inject constructor(
                 return@withContext Result.Error(e)
             }
         }
+
+    private suspend fun saveGenres(genres: List<Genre>) {
+        genreDao.insertAll(GenreMapper.getGenreEntityListFromGenre(genres))
+    }
 }

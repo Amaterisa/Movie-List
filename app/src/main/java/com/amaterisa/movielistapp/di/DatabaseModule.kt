@@ -2,6 +2,7 @@ package com.amaterisa.movielistapp.di
 
 import android.content.Context
 import androidx.room.Room
+import com.amaterisa.movielistapp.data.source.local.dao.GenreDao
 import com.amaterisa.movielistapp.data.source.local.dao.MovieDao
 import com.amaterisa.movielistapp.data.source.local.database.MovieDatabase
 import dagger.Module
@@ -21,7 +22,12 @@ object DatabaseModule {
     }
 
     @Provides
-    fun provideWatchListMovieDao(database: MovieDatabase): MovieDao {
-        return database.watchListMovieDao()
+    fun provideMovieDao(database: MovieDatabase): MovieDao {
+        return database.movieDao()
+    }
+
+    @Provides
+    fun provideGenreDao(database: MovieDatabase): GenreDao {
+        return database.genreDao()
     }
 }

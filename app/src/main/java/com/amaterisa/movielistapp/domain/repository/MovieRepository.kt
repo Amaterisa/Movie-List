@@ -22,4 +22,6 @@ interface MovieRepository {
     fun getMovieDetails(id: Long): Flow<Movie?>
 
     suspend fun saveMovies(movies: List<Movie>)
+
+    fun getAllGenres(): Flow<List<Genre>>
 }

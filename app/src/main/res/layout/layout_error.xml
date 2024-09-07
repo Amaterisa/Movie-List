@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/error_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:visibility="gone"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:visibility="visible"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/imv_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/img_error" />
+
+    <TextView
+        android:id="@+id/txv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/error_label"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:textSize="@dimen/title_size"
+        android:layout_marginTop="@dimen/default_padding" />
+
+    <TextView
+        android:id="@+id/txv_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/error_description"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:textColor="@color/gray"
+        android:layout_marginTop="@dimen/text_margin_top" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_retry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cornerRadius="24dp"
+        android:minWidth="@dimen/retry_width"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/default_padding"
+        app:backgroundTint="@color/cherry_dark"
+        app:rippleColor="@color/font_color"
+        android:textColor="@color/dark_gray"
+        android:text="@string/retry_label"
+        android:textAllCaps="false"
+        app:iconGravity="start"
+        app:iconTint="@color/dark_gray" />
+</LinearLayout>

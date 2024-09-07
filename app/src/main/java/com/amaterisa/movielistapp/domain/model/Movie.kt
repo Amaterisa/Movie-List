@@ -10,6 +10,5 @@ data class Movie(
     val voteAverage: String,
     val genreIds: List<Int>,
     var isInWatchList: Boolean = false,
-    var markWatched: Boolean = false,
-    var isTrending: Boolean = false
+    var markWatched: Boolean = false
 )

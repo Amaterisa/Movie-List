@@ -52,7 +52,6 @@
         android:id="@+id/btn_mark"
         android:layout_width="0dp"
         android:layout_height="@dimen/button_height"
-        android:backgroundTint="@color/cherry_dark"
         app:rippleColor="@color/font_color"
         android:textColor="@color/dark_gray"
         android:text="@string/watched_label"

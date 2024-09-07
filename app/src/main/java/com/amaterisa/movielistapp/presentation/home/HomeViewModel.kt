@@ -3,6 +3,7 @@ package com.amaterisa.movielistapp.presentation.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.amaterisa.movielistapp.domain.common.Resource
 import com.amaterisa.movielistapp.domain.model.Genre
 import com.amaterisa.movielistapp.domain.model.Movie
 import com.amaterisa.movielistapp.domain.usecase.GetGenreUseCase
@@ -25,12 +26,12 @@ class HomeViewModel @Inject constructor(
         private const val TAG = "HomeViewModel"
     }
 
-    private val _genreListResult = MutableLiveData<List<Genre>>()
-    val genreListResult: LiveData<List<Genre>>
+    private val _genreListResult = MutableLiveData<Resource<List<Genre>>>()
+    val genreListResult: LiveData<Resource<List<Genre>>>
         get() = _genreListResult
 
-    private val _movieResult = MutableLiveData<Pair<Genre, List<Movie>>>()
-    val movieResult: LiveData<Pair<Genre, List<Movie>>>
+    private val _movieResult = MutableLiveData<Pair<Genre, Resource<List<Movie>>>>()
+    val movieResult: LiveData<Pair<Genre, Resource<List<Movie>>>>
         get() = _movieResult
 
     fun getGenreList() {

@@ -8,13 +8,14 @@ import com.amaterisa.movielistapp.R
 import com.amaterisa.movielistapp.databinding.ItemWatchListMovieBinding
 import com.amaterisa.movielistapp.domain.model.Movie
 import com.amaterisa.movielistapp.utils.MovieUtils.getImageUrl
+import com.amaterisa.movielistapp.utils.MovieUtils.loadImageWithGlide
 import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
 
 class WatchListAdapter(
     private val onRemoveClick: (Movie) -> Unit,
     private val onMarkClick: (Movie) -> Unit,
-    private val onItemClick: (Long) -> Unit
+    private val onItemClick: (Movie) -> Unit
 ) : RecyclerView.Adapter<WatchListAdapter.MovieViewHolder>() {
     private var movieList: MutableList<Movie> = mutableListOf()
 
@@ -24,7 +25,7 @@ class WatchListAdapter(
             movie: Movie,
             onRemoveClick: (Movie) -> Unit,
             onMarkClick: (Movie) -> Unit,
-            onItemClick: (Long) -> Unit
+            onItemClick: (Movie) -> Unit
         ) {
             binding.run {
                 val url = getImageUrl(300, movie.posterPath)
@@ -34,11 +35,9 @@ class WatchListAdapter(
 
                 updateButton(btnMark, movie.markWatched)
 
-                Glide.with(root.context)
-                    .load(url)
-                    .into(movieImageView)
+                loadImageWithGlide(movieImageView, url)
 
-                root.setOnClickListener { onItemClick(movie.id) }
+                root.setOnClickListener { onItemClick(movie) }
 
                 btnRemove.setOnClickListener {
                     onRemoveClick(movie)

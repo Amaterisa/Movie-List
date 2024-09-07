@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/a_quarter_default_material_margin"
             android:layout_marginEnd="@dimen/a_quarter_default_material_margin"
+            android:visibility="gone"
             android:layout_gravity="top|end"
             android:src="@drawable/remove_btn" />
 

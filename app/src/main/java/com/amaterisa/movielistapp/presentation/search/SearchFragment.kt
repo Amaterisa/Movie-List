@@ -11,7 +11,9 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.amaterisa.movielistapp.R
+import com.amaterisa.movielistapp.domain.common.Resource
 import com.amaterisa.movielistapp.databinding.FragmentSearchBinding
+import com.amaterisa.movielistapp.domain.model.Movie
 import com.amaterisa.movielistapp.presentation.adapter.LinearItemDecoration
 import com.amaterisa.movielistapp.presentation.base.BaseFragment
 import com.amaterisa.movielistapp.presentation.main.FragmentConfig
@@ -31,7 +33,7 @@ class SearchFragment : BaseFragment() {
     }
 
     private val adapter: SearchMovieAdapter by lazy {
-        SearchMovieAdapter { id -> goToMovieDetails(id) }
+        SearchMovieAdapter { movie -> goToMovieDetails(movie) }
     }
 
     override fun fragmentType() = FragmentConfig.SEARCH
@@ -88,20 +90,37 @@ class SearchFragment : BaseFragment() {
                     return true
                 }
             })
+
+            errorLayout.btnRetry.setOnClickListener {
+                viewModel.updateSearchQuery(searchView.query.toString())
+            }
         }
     }
 
     private fun initObservers() {
         viewModel.movieResult.observe(viewLifecycleOwner) {
-            adapter.setMovies(it)
-            manageViews(it.isEmpty())
+            handleMovieSearchResult(it)
         }
     }
 
-    private fun manageViews(isEmpty: Boolean) {
+    private fun handleMovieSearchResult(resource: Resource<List<Movie>>) {
+        when (resource) {
+            is Resource.Success -> {
+                val movies = resource.data
+                adapter.setMovies(movies)
+                manageViews(movies.isEmpty())
+            }
+            else -> {
+                manageViews(isEmpty = true, hasError = true)
+            }
+        }
+    }
+
+    private fun manageViews(isEmpty: Boolean, hasError: Boolean = false) {
         binding.run {
-            moviesRv.toVisibility(!isEmpty)
-            noItemsLayout.toVisibility(isEmpty)
+            moviesRv.toVisibility(!isEmpty && !hasError)
+            noItemsLayout.toVisibility(isEmpty && !hasError)
+            errorLayout.errorLayout.toVisibility(hasError)
         }
     }
 

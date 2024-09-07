@@ -8,14 +8,17 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.amaterisa.movielistapp.R
 import com.amaterisa.movielistapp.databinding.FragmentHomeBinding
+import com.amaterisa.movielistapp.domain.common.Resource
+import com.amaterisa.movielistapp.domain.model.Genre
+import com.amaterisa.movielistapp.domain.model.Movie
 import com.amaterisa.movielistapp.presentation.adapter.LinearItemDecoration
-import com.amaterisa.movielistapp.presentation.base.AddWatchListBaseFragment
+import com.amaterisa.movielistapp.presentation.base.ManageWatchListBaseFragment
 import com.amaterisa.movielistapp.presentation.main.FragmentConfig
 import com.amaterisa.movielistapp.utils.ViewUtils.toVisibility
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : AddWatchListBaseFragment<HomeViewModel>() {
+class HomeFragment : ManageWatchListBaseFragment<HomeViewModel>() {
 
     companion object {
         const val TAG = "HomeFragment"
@@ -31,7 +34,7 @@ class HomeFragment : AddWatchListBaseFragment<HomeViewModel>() {
         MoviesByGenreAdapter(
             resources.getDimensionPixelSize(R.dimen.home_movie_width),
             resources.getDimensionPixelSize(R.dimen.home_movie_height),
-            { id -> goToMovieDetails(id) },
+            { movie -> goToMovieDetails(movie) },
             { movie -> onAddToWatchList(movie) })
     }
 
@@ -49,19 +52,15 @@ class HomeFragment : AddWatchListBaseFragment<HomeViewModel>() {
         initObservers()
         setupBinding()
         viewModel.getGenreList()
-        manageViews(true)
     }
 
     private fun initObservers() {
         viewModel.genreListResult.observe(viewLifecycleOwner) {
-            for (genre in it) {
-                viewModel.getMoviesByGenre(genre)
-            }
+            handleGenreResource(it)
         }
 
         viewModel.movieResult.observe(viewLifecycleOwner) {
-            manageViews(false)
-            moviesByGenreAdapter.setMoviesByGenre(it)
+            handleMoviesResource(it)
         }
     }
 
@@ -86,13 +85,52 @@ class HomeFragment : AddWatchListBaseFragment<HomeViewModel>() {
             btnTop.setOnClickListener {
                 genresRv.smoothScrollToPosition(0)
             }
+
+            errorLayout.btnRetry.setOnClickListener {
+                viewModel.getGenreList()
+            }
         }
     }
 
-    private fun manageViews(isLoading: Boolean) {
+    private fun handleMoviesResource(resource: Pair<Genre, Resource<List<Movie>>>) {
+        when(val res = resource.second) {
+            is Resource.Loading -> {
+                manageViews(true)
+            }
+            is Resource.Success -> {
+                val movie = res.data
+                val pair = Pair(resource.first, movie)
+                moviesByGenreAdapter.setMoviesByGenre(pair)
+                manageViews(isLoading = false, hasError = false)
+
+            }
+            is Resource.Error -> {
+                manageViews(isLoading = false, hasError = true)
+            }
+        }
+    }
+
+    private fun handleGenreResource(resource: Resource<List<Genre>>) {
+        when(resource) {
+            is Resource.Loading -> {
+                manageViews(true)
+            }
+            is Resource.Success -> {
+                for (genre in resource.data) {
+                    viewModel.getMoviesByGenre(genre)
+                }
+            }
+            is Resource.Error -> {
+                manageViews(isLoading = false, hasError = true)
+            }
+        }
+    }
+
+    private fun manageViews(isLoading: Boolean = false, hasError: Boolean = false) {
         binding.run {
-            genresRv.toVisibility(!isLoading)
-            progressBar.toVisibility(isLoading)
+            genresRv.toVisibility(!isLoading && !hasError)
+            progressBar.toVisibility(isLoading && !hasError)
+            errorLayout.errorLayout.toVisibility(hasError)
         }
     }
 }

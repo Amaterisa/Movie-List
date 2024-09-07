@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.Menu
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -16,6 +15,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.amaterisa.movielistapp.R
 import com.amaterisa.movielistapp.databinding.ActivityMainBinding
+import com.amaterisa.movielistapp.domain.model.Movie
 import com.amaterisa.movielistapp.presentation.home.HomeFragment
 import com.amaterisa.movielistapp.presentation.moviedetails.MovieDetailsFragment
 import com.amaterisa.movielistapp.presentation.popularmovies.PopularMoviesFragment
@@ -173,14 +173,6 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         binding.bottomNavigation.toVisibility(show)
     }
 
-    private fun showSearchBar(show: Boolean) {
-        val item = binding.toolbar.toolbarLayout.menu.findItem(R.id.action_search)
-        item.isVisible = show
-        if (show) {
-            item.expandActionView()
-        }
-    }
-
     override fun setupNavigationLayout(fragmentConfig: FragmentConfig) {
         binding.run {
             toolbar.toolbarLayout.title = fragmentConfig.fragmentName
@@ -206,9 +198,8 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         }
     }
 
-    override fun goToMovieDetails(id: Long) {
-        val bundle = bundleOf("movieId" to id)
-        navController?.navigate(R.id.nav_movie_details, bundle)
+    override fun goToMovieDetails(movie: Movie) {
+        navController?.navigate(R.id.nav_movie_details)
     }
 
     fun goToSearch() {

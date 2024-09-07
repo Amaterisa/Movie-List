@@ -1,13 +1,12 @@
 package com.amaterisa.movielistapp.data.repository
 
-import android.util.Log
 import com.amaterisa.movielistapp.data.mapper.GenreMapper
 import com.amaterisa.movielistapp.data.mapper.MovieMapper
 import com.amaterisa.movielistapp.data.source.local.dao.GenreDao
 import com.amaterisa.movielistapp.data.source.local.dao.MovieDao
 import com.amaterisa.movielistapp.data.source.remote.MovieApiService
 import com.amaterisa.movielistapp.data.source.remote.movie.MovieListResponse
-import com.amaterisa.movielistapp.domain.common.Result
+import com.amaterisa.movielistapp.domain.common.Resource
 import com.amaterisa.movielistapp.domain.model.Genre
 import com.amaterisa.movielistapp.domain.model.Movie
 import com.amaterisa.movielistapp.domain.repository.MovieRepository
@@ -30,18 +29,12 @@ class MovieRepositoryImpl @Inject constructor(
         const val TAG = "MovieRepository"
     }
 
-    override fun getPopularMovies(): Flow<List<Movie>> {
+    override fun getPopularMovies(): Flow<Resource<List<Movie>>> {
         return flow {
+            emit(Resource.Loading)
             val result = getPopularMoviesRemote()
-            if (result is Result.Success) {
-                saveMovies(result.data)
-                emit(result.data)
-            } else {
-                val entity = movieDao.getPopularMovies()
-                val movies = entity?.map { MovieMapper.getMovieFromEntity(it) } ?: emptyList()
-                emit(movies)
-            }
-        }
+            emit(result)
+        }.flowOn(Dispatchers.IO)
     }
 
     override suspend fun saveMovieToWatchList(movie: Movie) {
@@ -61,7 +54,7 @@ class MovieRepositoryImpl @Inject constructor(
             movies?.map { movie ->
                 MovieMapper.getMovieFromEntity(movie)
             } ?: emptyList<Movie>()
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
     override suspend fun removeMovieFromWatchList(id: Long) {
@@ -77,46 +70,48 @@ class MovieRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getGenreList(): Flow<List<Genre>> {
+    override fun getGenreList(): Flow<Resource<List<Genre>>> {
         return flow {
+            emit(Resource.Loading)
             val genreEntities = genreDao.getAll()
             if (genreEntities.isNotEmpty()) {
-                emit(GenreMapper.getGenreListFromEntity(genreEntities))
+                emit(Resource.Success(GenreMapper.getGenreListFromEntity(genreEntities)))
             } else {
                 val result = getGenreListRemote()
-                if (result is Result.Success) {
+                if (result is Resource.Success) {
                     saveGenres(result.data)
-                    emit(result.data)
                 }
+                emit(result)
             }
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
-    override fun getMoviesByGenre(genre: Genre): Flow<List<Movie>> {
+    override fun getMoviesByGenre(genre: Genre): Flow<Resource<List<Movie>>> {
         return flow {
+            emit(Resource.Loading)
             val result = getMoviesByGenreRemote(genre)
-            if (result is Result.Success) {
+            if (result is Resource.Success) {
                 saveMovies(result.data)
-                emit(result.data)
             }
-        }
+            emit(result)
+        }.flowOn(Dispatchers.IO)
     }
 
-    override fun getMovieDetails(id: Long): Flow<Movie?> {
-        val movies = movieDao.getMovie(id).map {
-            if (it == null) {
-                val result = getMoviesDetailsRemote(id)
-                if (result is Result.Success) {
-                    movieDao.insert(MovieMapper.getMovieEntityFromMovie(result.data))
-                    return@map result.data
+    override fun getMovieDetails(id: Long): Flow<Resource<Movie?>> {
+        return flow {
+            emit(Resource.Loading)
+            movieDao.getMovie(id).map {
+                if (it == null) {
+                    val result = getMoviesDetailsRemote(id)
+                    if (result is Resource.Success) {
+                        movieDao.insert(MovieMapper.getMovieEntityFromMovie(result.data))
+                    }
+                    emit(result)
                 } else {
-                    return@map null
+                    emit(Resource.Success(MovieMapper.getMovieFromEntity(it)))
                 }
-            } else {
-                return@map MovieMapper.getMovieFromEntity(it)
             }
-        }
-        return movies
+        }.flowOn(Dispatchers.IO)
     }
 
     override suspend fun saveMovies(movies: List<Movie>) {
@@ -129,63 +124,74 @@ class MovieRepositoryImpl @Inject constructor(
     override fun getAllGenres(): Flow<List<Genre>> {
         return flow {
             emit(GenreMapper.getGenreListFromEntity(genreDao.getAll()))
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
-    override fun searchMovie(name: String): Flow<List<Movie>> {
+    override fun searchMovie(name: String): Flow<Resource<List<Movie>>> {
         return flow {
             try {
                 val response = movieApiService.searchMovie(name)
                 val movies =
-                    response.results.filter { it.posterPath != null && it.backdropPath != null && it.overview != null }
-                emit(MovieMapper.getMovieFromResponse(MovieListResponse(response.page, movies)))
+                    response.results.filter {
+                        it.posterPath != null && it.backdropPath != null && it.overview != null
+                    }
+                emit(
+                    Resource.Success(
+                        MovieMapper.getMovieFromResponse(
+                            MovieListResponse(
+                                response.page,
+                                movies
+                            )
+                        )
+                    )
+                )
             } catch (e: Exception) {
-                Log.d(TAG, "error $e")
+                emit(Resource.Error(e))
             }
         }.flowOn(Dispatchers.IO)
     }
 
-    private suspend fun getPopularMoviesRemote(): Result<List<Movie>> =
+    private suspend fun getPopularMoviesRemote(): Resource<List<Movie>> =
         withContext(Dispatchers.IO) {
             try {
                 val response = movieApiService.getPopularMovies()
-                return@withContext Result.Success(MovieMapper.getMovieFromResponse(response, true))
+                return@withContext Resource.Success(MovieMapper.getMovieFromResponse(response))
             } catch (e: Exception) {
-                return@withContext Result.Error(e)
+                return@withContext Resource.Error(e)
             }
         }
 
-    private suspend fun getGenreListRemote(): Result<List<Genre>> =
+    private suspend fun getGenreListRemote(): Resource<List<Genre>> =
         withContext(Dispatchers.IO) {
             try {
                 val response = movieApiService.getGenres()
-                return@withContext Result.Success(GenreMapper.getGenreListFromResponse(response))
+                return@withContext Resource.Success(GenreMapper.getGenreListFromResponse(response))
             } catch (e: Exception) {
-                return@withContext Result.Error(e)
+                return@withContext Resource.Error(e)
             }
         }
 
-    private suspend fun getMoviesByGenreRemote(genre: Genre): Result<List<Movie>> =
+    private suspend fun getMoviesByGenreRemote(genre: Genre): Resource<List<Movie>> =
         withContext(Dispatchers.IO) {
             try {
                 val response = movieApiService.getMoviesByGenre(genre.id)
-                return@withContext Result.Success(MovieMapper.getMovieFromResponse(response))
+                return@withContext Resource.Success(MovieMapper.getMovieFromResponse(response))
             } catch (e: Exception) {
-                return@withContext Result.Error(e)
+                return@withContext Resource.Error(e)
             }
         }
 
-    private suspend fun getMoviesDetailsRemote(id: Long): Result<Movie> =
+    private suspend fun getMoviesDetailsRemote(id: Long): Resource<Movie> =
         withContext(Dispatchers.IO) {
             try {
                 val response = movieApiService.getMoviesDetails(id)
-                return@withContext Result.Success(
+                return@withContext Resource.Success(
                     MovieMapper.getMovieFromMovieDetailsResponse(
                         response
                     )
                 )
             } catch (e: Exception) {
-                return@withContext Result.Error(e)
+                return@withContext Resource.Error(e)
             }
         }
 

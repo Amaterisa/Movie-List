@@ -8,7 +8,7 @@ import com.amaterisa.movielistapp.utils.ListUtils.transformListToString
 import com.amaterisa.movielistapp.utils.ListUtils.transformStringToList
 
 object MovieMapper {
-    fun getMovieFromResponse(movieListResponse: MovieListResponse, isTrending: Boolean = false): List<Movie> {
+    fun getMovieFromResponse(movieListResponse: MovieListResponse): List<Movie> {
         return movieListResponse.results.map {
             Movie(
                 id = it.id,
@@ -18,8 +18,7 @@ object MovieMapper {
                 backdropPath = it.backdropPath ?: it.posterPath ?: "",
                 releaseDate = it.releaseDate,
                 voteAverage = it.voteAverage,
-                genreIds = it.genreIds,
-                isTrending = isTrending
+                genreIds = it.genreIds
             )
         }
     }
@@ -36,8 +35,7 @@ object MovieMapper {
                 voteAverage = it.voteAverage,
                 genreIds = transformListToString(it.genreIds),
                 isInWatchList = it.isInWatchList,
-                markWatched = it.markWatched,
-                isTrending = it.isTrending
+                markWatched = it.markWatched
             )
         }
     }
@@ -54,8 +52,7 @@ object MovieMapper {
                 voteAverage = it.voteAverage,
                 genreIds = transformStringToList(it.genreIds),
                 isInWatchList = it.isInWatchList,
-                markWatched = it.markWatched,
-                isTrending = it.isTrending
+                markWatched = it.markWatched
             )
         }
     }

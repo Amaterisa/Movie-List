@@ -14,6 +14,5 @@ data class MovieEntity(
     val voteAverage: String,
     val genreIds: String,
     var isInWatchList: Boolean,
-    var markWatched: Boolean,
-    var isTrending: Boolean
+    var markWatched: Boolean
 )

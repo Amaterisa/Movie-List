@@ -6,10 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.amaterisa.movielistapp.databinding.ItemMovieSearchBinding
 import com.amaterisa.movielistapp.domain.model.Movie
 import com.amaterisa.movielistapp.utils.MovieUtils.getImageUrl
+import com.amaterisa.movielistapp.utils.MovieUtils.loadImageWithGlide
 import com.bumptech.glide.Glide
 
 class SearchMovieAdapter(
-    private val onItemClick: (Long) -> Unit
+    private val onItemClick: (Movie) -> Unit
 ) : RecyclerView.Adapter<SearchMovieAdapter.MovieSearchViewHolder>() {
     private var movieList: MutableList<Movie> = mutableListOf()
 
@@ -17,19 +18,16 @@ class SearchMovieAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
             movie: Movie,
-            onItemClick: (Long) -> Unit
+            onItemClick: (Movie) -> Unit
         ) {
             binding.run {
                 val url = getImageUrl(300, movie.posterPath)
 
                 txvTitle.text = movie.title
                 txvDescription.text = movie.overview
+                loadImageWithGlide(movieImageView, url)
 
-                Glide.with(root.context)
-                    .load(url)
-                    .into(movieImageView)
-
-                root.setOnClickListener { onItemClick(movie.id) }
+                root.setOnClickListener { onItemClick(movie) }
             }
         }
     }

@@ -9,12 +9,13 @@ import com.amaterisa.movielistapp.R
 import com.amaterisa.movielistapp.databinding.ItemMovieBinding
 import com.amaterisa.movielistapp.domain.model.Movie
 import com.amaterisa.movielistapp.utils.MovieUtils.getImageUrl
+import com.amaterisa.movielistapp.utils.MovieUtils.loadImageWithGlide
 import com.bumptech.glide.Glide
 
 class MovieListAdapter(
     private val imageWidth: Int,
     private val imageHeight: Int,
-    private val onItemClick: (Long) -> Unit,
+    private val onItemClick: (Movie) -> Unit,
     private val onWatchlistClick: (Movie) -> Unit
 ) : RecyclerView.Adapter<MovieListAdapter.MovieViewHolder>() {
     private var movieList: MutableList<Movie> = mutableListOf()
@@ -25,7 +26,7 @@ class MovieListAdapter(
             movie: Movie,
             imageWidth: Int,
             imageHeight: Int,
-            onItemClick: (Long) -> Unit,
+            onItemClick: (Movie) -> Unit,
             onWatchlistClick: (Movie) -> Unit
         ) {
             val url = getImageUrl(300, movie.posterPath)
@@ -36,13 +37,11 @@ class MovieListAdapter(
                 layoutParams.height = imageHeight
                 movieImageView.layoutParams = layoutParams
 
-                Glide.with(root.context)
-                    .load(url)
-                    .into(movieImageView)
+                loadImageWithGlide(movieImageView, url)
 
                 setButtonDrawable(addBtn, movie)
 
-                root.setOnClickListener { onItemClick(movie.id) }
+                root.setOnClickListener { onItemClick(movie) }
 
                 addBtn.setOnClickListener {
                     onWatchlistClick(movie)

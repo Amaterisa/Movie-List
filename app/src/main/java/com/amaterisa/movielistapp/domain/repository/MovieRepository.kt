@@ -3,9 +3,10 @@ package com.amaterisa.movielistapp.domain.repository
 import com.amaterisa.movielistapp.domain.model.Genre
 import com.amaterisa.movielistapp.domain.model.Movie
 import kotlinx.coroutines.flow.Flow
+import com.amaterisa.movielistapp.domain.common.Resource
 
 interface MovieRepository {
-    fun getPopularMovies(): Flow<List<Movie>>
+    fun getPopularMovies(): Flow<Resource<List<Movie>>>
 
     suspend fun saveMovieToWatchList(movie: Movie)
 
@@ -15,15 +16,15 @@ interface MovieRepository {
 
     suspend fun markWatchListMovie(movie: Movie)
 
-    fun getGenreList(): Flow<List<Genre>>
+    fun getGenreList(): Flow<Resource<List<Genre>>>
 
-    fun getMoviesByGenre(genre: Genre): Flow<List<Movie>>
+    fun getMoviesByGenre(genre: Genre): Flow<Resource<List<Movie>>>
 
-    fun getMovieDetails(id: Long): Flow<Movie?>
+    fun getMovieDetails(id: Long): Flow<Resource<Movie?>>
 
     suspend fun saveMovies(movies: List<Movie>)
 
     fun getAllGenres(): Flow<List<Genre>>
 
-    fun searchMovie(name: String): Flow<List<Movie>>
+    fun searchMovie(name: String): Flow<Resource<List<Movie>>>
 }

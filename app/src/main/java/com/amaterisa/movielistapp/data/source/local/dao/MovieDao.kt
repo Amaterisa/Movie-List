@@ -25,9 +25,6 @@ interface MovieDao {
     @Query("SELECT * FROM movies WHERE isInWatchList = 1")
     fun getWatchListMovies(): Flow<List<MovieEntity>?>
 
-    @Query("SELECT * FROM movies WHERE isTrending = 1")
-    fun getPopularMovies(): List<MovieEntity>?
-
     @Delete
     suspend fun delete(movie: MovieEntity)
 

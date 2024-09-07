@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.amaterisa.movielistapp.domain.model.Genre
 import com.amaterisa.movielistapp.domain.model.Movie
-import com.amaterisa.movielistapp.domain.usecase.GetMovieDetailsUseCase
 import com.amaterisa.movielistapp.domain.usecase.GetMovieGenresUseCase
+import com.amaterisa.movielistapp.domain.usecase.GetWatchListUseCase
 import com.amaterisa.movielistapp.domain.usecase.RemoveMovieFromWatchListUseCase
 import com.amaterisa.movielistapp.domain.usecase.SaveMovieToWatchListUseCase
 import com.amaterisa.movielistapp.presentation.base.ManageWatchListBaseViewModel
@@ -16,36 +16,34 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor(
-    private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
     private val getMovieGenresUseCase: GetMovieGenresUseCase,
+    private val getWatchListUseCase: GetWatchListUseCase,
     saveMovieToWatchListUseCase: SaveMovieToWatchListUseCase,
     removeMovieFromWatchListUseCase: RemoveMovieFromWatchListUseCase
 ) : ManageWatchListBaseViewModel(saveMovieToWatchListUseCase, removeMovieFromWatchListUseCase) {
-
-    private val _movieResult = MutableLiveData<Movie?>()
-    val movieResult: LiveData<Movie?>
-        get() = _movieResult
 
     private val _genresResult = MutableLiveData<List<Genre>>()
     val genresResult: LiveData<List<Genre>>
         get() = _genresResult
 
-    fun getMovieDetails(id: Long) {
+    private val _watchListResult = MutableLiveData<List<Movie>>()
+    val watchListResult: LiveData<List<Movie>>
+        get() = _watchListResult
+
+    fun getWatchListMovies() {
         viewModelScope.launch {
-            getMovieDetailsUseCase.invoke(id).collect {
-                _movieResult.postValue(it)
+            getWatchListUseCase.invoke().collect {
+                _watchListResult.postValue(it)
             }
         }
     }
 
-    fun toggleWatchList(marked: Boolean) {
+    fun toggleWatchList(movie: Movie) {
         viewModelScope.launch {
-            movieResult.value?.let { movie ->
-                if (marked) {
-                    removeFromWatchList(movie.id)
-                } else {
-                    saveToWatchList(movie)
-                }
+            if (isInWatchList(movie)) {
+                removeFromWatchList(movie.id)
+            } else {
+                saveToWatchList(movie)
             }
         }
     }
@@ -56,5 +54,10 @@ class MovieDetailsViewModel @Inject constructor(
                 _genresResult.postValue(it)
             }
         }
+    }
+
+    fun isInWatchList(movie: Movie): Boolean {
+        val isInWatchList = watchListResult.value?.any { it.id == movie.id }
+        return isInWatchList ?: false
     }
 }

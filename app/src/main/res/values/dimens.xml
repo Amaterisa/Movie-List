@@ -22,6 +22,7 @@
     <dimen name="top_button_width">64dp</dimen>
     <dimen name="details_img_height">232dp</dimen>
     <dimen name="search_movie_max_height">164dp</dimen>
+    <dimen name="retry_width">240dp</dimen>
 
     <dimen name="title_size">22sp</dimen>
     <dimen name="medium_size">16sp</dimen>

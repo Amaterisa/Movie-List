@@ -8,15 +8,17 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.amaterisa.movielistapp.R
 import com.amaterisa.movielistapp.databinding.FragmentPopularMoviesBinding
+import com.amaterisa.movielistapp.domain.common.Resource
+import com.amaterisa.movielistapp.domain.model.Movie
 import com.amaterisa.movielistapp.presentation.adapter.GridSpaceItemDecoration
 import com.amaterisa.movielistapp.presentation.adapter.MovieListAdapter
-import com.amaterisa.movielistapp.presentation.base.AddWatchListBaseFragment
+import com.amaterisa.movielistapp.presentation.base.ManageWatchListBaseFragment
 import com.amaterisa.movielistapp.presentation.main.FragmentConfig
 import com.amaterisa.movielistapp.utils.ViewUtils.toVisibility
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PopularMoviesFragment : AddWatchListBaseFragment<PopularMoviesViewModel>() {
+class PopularMoviesFragment : ManageWatchListBaseFragment<PopularMoviesViewModel>() {
     companion object {
         const val TAG = "PopularMoviesFragment"
     }
@@ -31,7 +33,7 @@ class PopularMoviesFragment : AddWatchListBaseFragment<PopularMoviesViewModel>()
         MovieListAdapter(
             resources.getDimensionPixelSize(R.dimen.top_movie_width),
             resources.getDimensionPixelSize(R.dimen.top_movie_height),
-            { id -> goToMovieDetails(id) },
+            { movie -> goToMovieDetails(movie) },
             { movie -> onAddToWatchList(movie) })
     }
 
@@ -73,20 +75,39 @@ class PopularMoviesFragment : AddWatchListBaseFragment<PopularMoviesViewModel>()
             btnTop.setOnClickListener {
                 moviesRv.smoothScrollToPosition(0)
             }
+
+            errorLayout.btnRetry.setOnClickListener {
+                viewModel.getPopularMovies()
+            }
         }
     }
 
     private fun initObservers() {
         viewModel.movieResult.observe(viewLifecycleOwner) {
-            movieListAdapter.setMovies(it)
-            manageViews(false)
+           handleMoviesResource(it)
         }
     }
 
-    private fun manageViews(isLoading: Boolean) {
+    private fun handleMoviesResource(resource: Resource<List<Movie>>) {
+        when(resource) {
+            is Resource.Loading -> {
+                manageViews(true)
+            }
+            is Resource.Success -> {
+                movieListAdapter.setMovies(resource.data)
+                manageViews(false)
+            }
+            is Resource.Error -> {
+                manageViews(isLoading = false, hasError = true)
+            }
+        }
+    }
+
+    private fun manageViews(isLoading: Boolean, hasError: Boolean = false) {
         binding.run {
-            moviesRv.toVisibility(!isLoading)
-            progressBar.toVisibility(isLoading)
+            moviesRv.toVisibility(!isLoading && !hasError)
+            progressBar.toVisibility(isLoading && !hasError)
+            errorLayout.errorLayout.toVisibility(hasError)
         }
     }
 }

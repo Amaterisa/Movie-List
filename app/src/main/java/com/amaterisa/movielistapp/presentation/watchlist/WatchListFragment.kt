@@ -33,7 +33,7 @@ class WatchListFragment : BaseFragment() {
         WatchListAdapter(
             { movie -> removeFromWatchList(movie) },
             { movie -> markMovie(movie) },
-            { id -> goToMovieDetails(id) }
+            { movie -> goToMovieDetails(movie) }
         )
     }
 

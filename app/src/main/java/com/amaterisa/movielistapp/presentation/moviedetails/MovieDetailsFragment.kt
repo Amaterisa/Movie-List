@@ -7,21 +7,18 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import com.amaterisa.movielistapp.R
-import com.amaterisa.movielistapp.data.source.remote.movie.MovieDetailsResponse
 import com.amaterisa.movielistapp.databinding.FragmentMovieDetailsBinding
 import com.amaterisa.movielistapp.domain.model.Movie
-import com.amaterisa.movielistapp.presentation.base.AddWatchListBaseFragment
-import com.amaterisa.movielistapp.presentation.base.BaseFragment
+import com.amaterisa.movielistapp.presentation.base.ManageWatchListBaseFragment
 import com.amaterisa.movielistapp.presentation.main.FragmentConfig
 import com.amaterisa.movielistapp.utils.MovieUtils
 import com.amaterisa.movielistapp.utils.MovieUtils.getImageUrl
-import com.amaterisa.movielistapp.utils.ViewUtils.toVisibility
-import com.bumptech.glide.Glide
+import com.amaterisa.movielistapp.utils.MovieUtils.loadImageWithGlide
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
 @AndroidEntryPoint
-class MovieDetailsFragment : AddWatchListBaseFragment<MovieDetailsViewModel>() {
+class MovieDetailsFragment : ManageWatchListBaseFragment<MovieDetailsViewModel>() {
 
     companion object {
         const val TAG = "MovieDetailsFragment"
@@ -45,27 +42,31 @@ class MovieDetailsFragment : AddWatchListBaseFragment<MovieDetailsViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initObservers()
-        manageViews(true)
-        val movieId = arguments?.getLong("movieId")
-        movieId?.let { viewModel.getMovieDetails(it) }
     }
 
     private fun initObservers() {
-        viewModel.movieResult.observe(viewLifecycleOwner) {
+        sharedViewModel.selectedMovie.observe(viewLifecycleOwner) { movie ->
+            setupBinding(movie)
             viewModel.getMovieGenres()
-            if (it != null) {
-                setupBinding(it)
-            } else {
-
-            }
+            viewModel.getWatchListMovies()
         }
 
         viewModel.genresResult.observe(viewLifecycleOwner) { genres ->
-            val movie = viewModel.movieResult.value
-            movie?.let {
-                val genresNames = MovieUtils.getGenreNames(it.genreIds, genres)
-                binding.genresValue.text = genresNames
+            val movie = sharedViewModel.selectedMovie
+            movie.value?.let {
+                if (it.genreIds.isNotEmpty()) {
+                    val genresNames = MovieUtils.getGenreNames(it.genreIds, genres)
+                    binding.genresValue.text = genresNames
+                }
             }
+        }
+
+        viewModel.watchListResult.observe(viewLifecycleOwner) { watchList ->
+            val isInWatchList = sharedViewModel.selectedMovie.value?.let {
+                viewModel.isInWatchList(it)
+            } ?: false
+
+            setupWatchListButton(isInWatchList)
         }
     }
 
@@ -75,33 +76,22 @@ class MovieDetailsFragment : AddWatchListBaseFragment<MovieDetailsViewModel>() {
             description.text = movie.overview
 
             val url = getImageUrl(500, movie.backdropPath)
-            Glide.with(root.context)
-                .load(url)
-                .into(imvMovie)
+            loadImageWithGlide(imvMovie, url)
 
             imvMovie.visibility = View.VISIBLE
 
             releaseDateValue.text = movie.releaseDate
             val score = String.format(Locale.ROOT, "%.2f", movie.voteAverage.toFloat())
             scoreValue.text = getString(R.string.score_value, score)
-            setupWatchListButton(movie.isInWatchList)
 
             btnWatchList.setOnClickListener {
-                toggleWatchListMark(movie.isInWatchList)
+                toggleWatchListMark(movie)
             }
-            manageViews(false)
         }
     }
 
-    private fun toggleWatchListMark(marked: Boolean) {
-        viewModel.toggleWatchList(marked)
-    }
-
-    private fun manageViews(isLoading: Boolean = false) {
-        binding.run {
-            detailsGroup.toVisibility(!isLoading)
-            progressBar.toVisibility(isLoading)
-        }
+    private fun toggleWatchListMark(movie: Movie) {
+        viewModel.toggleWatchList(movie)
     }
 
     private fun setupWatchListButton(marked: Boolean) {

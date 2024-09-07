@@ -3,6 +3,7 @@
     <string name="trending_label">Trending</string>
     <string name="search_label">Search</string>
     <string name="movies_label">Movies</string>
+    <string name="retry_label">Retry</string>
     <string name="watch_list_label">My list</string>
     <string name="add_watch_list_label">Add to my list</string>
     <string name="added_watch_list_label">Added to my list</string>
@@ -12,9 +13,12 @@
     <string name="watched_label">Watched</string>
     <string name="mark_watched_label">Mark as watched</string>
     <string name="release_date_label">Release date</string>
+    <string name="genres_not_found">Genres not found</string>
     <string name="score_label">Score</string>
     <string name="score_value">%s/10</string>
     <string name="genres_label">Genres</string>
+    <string name="error_label">Oops, something went wrong</string>
+    <string name="error_description">Please, check your internet connection or try again later.</string>
     <string name="search_no_items">No results found</string>
     <string name="search_no_items_description">We couldn\'t find what you searched for.\nTry searching again.</string>
     <string name="no_items_title">Wooo, there’s nothing here!</string>

@@ -6,6 +6,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.home.HomeFragment">
 
+    <include
+        android:id="@+id/error_layout"
+        layout="@layout/layout_error" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/genres_rv"
         android:layout_width="match_parent"

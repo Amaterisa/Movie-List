@@ -2,15 +2,13 @@ package com.amaterisa.movielistapp.presentation.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.amaterisa.movielistapp.domain.common.Resource
 import com.amaterisa.movielistapp.domain.model.Genre
 import com.amaterisa.movielistapp.domain.model.Movie
 import com.amaterisa.movielistapp.domain.usecase.GetGenreUseCase
 import com.amaterisa.movielistapp.domain.usecase.GetMoviesByGenreUseCase
-import com.amaterisa.movielistapp.domain.usecase.RemoveMovieFromWatchListUseCase
-import com.amaterisa.movielistapp.domain.usecase.SaveMovieToWatchListUseCase
-import com.amaterisa.movielistapp.presentation.base.ManageWatchListBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,10 +16,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getGenreUseCase: GetGenreUseCase,
-    private val getMoviesByGetGenreUseCase: GetMoviesByGenreUseCase,
-    saveMovieToWatchListUseCase: SaveMovieToWatchListUseCase,
-    removeMovieFromWatchListUseCase: RemoveMovieFromWatchListUseCase
-) : ManageWatchListBaseViewModel(saveMovieToWatchListUseCase, removeMovieFromWatchListUseCase) {
+    private val getMoviesByGetGenreUseCase: GetMoviesByGenreUseCase
+) : ViewModel() {
     companion object {
         private const val TAG = "HomeViewModel"
     }

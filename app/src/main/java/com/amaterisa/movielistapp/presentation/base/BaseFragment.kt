@@ -7,7 +7,7 @@ import com.amaterisa.movielistapp.presentation.main.FragmentConfig
 import com.amaterisa.movielistapp.presentation.main.IMainActivity
 import com.amaterisa.movielistapp.presentation.main.SharedMovieViewModel
 
-abstract class BaseFragment: Fragment() {
+abstract class BaseFragment : Fragment() {
 
     val sharedViewModel: SharedMovieViewModel by activityViewModels()
 

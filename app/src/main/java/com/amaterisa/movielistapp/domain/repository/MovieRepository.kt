@@ -1,9 +1,9 @@
 package com.amaterisa.movielistapp.domain.repository
 
+import com.amaterisa.movielistapp.domain.common.Resource
 import com.amaterisa.movielistapp.domain.model.Genre
 import com.amaterisa.movielistapp.domain.model.Movie
 import kotlinx.coroutines.flow.Flow
-import com.amaterisa.movielistapp.domain.common.Resource
 
 interface MovieRepository {
     fun getPopularMovies(): Flow<Resource<List<Movie>>>
@@ -19,8 +19,6 @@ interface MovieRepository {
     fun getGenreList(): Flow<Resource<List<Genre>>>
 
     fun getMoviesByGenre(genre: List<Genre>): Flow<Resource<Map<Genre, List<Movie>>>>
-
-    fun getMovieDetails(id: Long): Flow<Resource<Movie?>>
 
     suspend fun saveMovies(movies: List<Movie>)
 

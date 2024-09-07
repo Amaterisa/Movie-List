@@ -8,7 +8,7 @@ import com.amaterisa.movielistapp.data.source.local.entity.GenreEntity
 import com.amaterisa.movielistapp.data.source.local.entity.MovieEntity
 
 @Database(entities = [MovieEntity::class, GenreEntity::class], version = 1, exportSchema = false)
-abstract class MovieDatabase: RoomDatabase() {
+abstract class MovieDatabase : RoomDatabase() {
     abstract fun movieDao(): MovieDao
 
     abstract fun genreDao(): GenreDao

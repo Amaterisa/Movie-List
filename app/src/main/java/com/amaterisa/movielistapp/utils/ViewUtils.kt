@@ -4,10 +4,10 @@ import android.view.View
 
 object ViewUtils {
     fun View.toVisibility(visible: Boolean) {
-        if (visible) {
-            visibility = View.VISIBLE
+        visibility = if (visible) {
+            View.VISIBLE
         } else {
-            visibility = View.GONE
+            View.GONE
         }
     }
 }

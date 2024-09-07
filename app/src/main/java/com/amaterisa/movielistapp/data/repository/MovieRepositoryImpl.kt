@@ -105,23 +105,6 @@ class MovieRepositoryImpl @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
-    override fun getMovieDetails(id: Long): Flow<Resource<Movie?>> {
-        return flow {
-            emit(Resource.Loading)
-            movieDao.getMovie(id).map {
-                if (it == null) {
-                    val result = getMoviesDetailsRemote(id)
-                    if (result is Resource.Success) {
-                        movieDao.insert(MovieMapper.getMovieEntityFromMovie(result.data))
-                    }
-                    emit(result)
-                } else {
-                    emit(Resource.Success(MovieMapper.getMovieFromEntity(it)))
-                }
-            }
-        }.flowOn(Dispatchers.IO)
-    }
-
     override suspend fun saveMovies(movies: List<Movie>) {
         withContext(Dispatchers.IO) {
             val entities = movies.map { MovieMapper.getMovieEntityFromMovie(it) }
@@ -184,20 +167,6 @@ class MovieRepositoryImpl @Inject constructor(
             try {
                 val response = movieApiService.getMoviesByGenre(genre.id)
                 return@withContext Resource.Success(MovieMapper.getMovieFromResponse(response))
-            } catch (e: Exception) {
-                return@withContext Resource.Error(e)
-            }
-        }
-
-    private suspend fun getMoviesDetailsRemote(id: Long): Resource<Movie> =
-        withContext(Dispatchers.IO) {
-            try {
-                val response = movieApiService.getMoviesDetails(id)
-                return@withContext Resource.Success(
-                    MovieMapper.getMovieFromMovieDetailsResponse(
-                        response
-                    )
-                )
             } catch (e: Exception) {
                 return@withContext Resource.Error(e)
             }

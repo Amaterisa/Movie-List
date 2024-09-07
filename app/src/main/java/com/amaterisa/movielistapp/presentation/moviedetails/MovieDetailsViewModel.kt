@@ -2,6 +2,7 @@ package com.amaterisa.movielistapp.presentation.moviedetails
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.amaterisa.movielistapp.domain.model.Genre
 import com.amaterisa.movielistapp.domain.model.Movie
@@ -9,7 +10,6 @@ import com.amaterisa.movielistapp.domain.usecase.GetMovieGenresUseCase
 import com.amaterisa.movielistapp.domain.usecase.GetWatchListUseCase
 import com.amaterisa.movielistapp.domain.usecase.RemoveMovieFromWatchListUseCase
 import com.amaterisa.movielistapp.domain.usecase.SaveMovieToWatchListUseCase
-import com.amaterisa.movielistapp.presentation.base.ManageWatchListBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,9 +18,9 @@ import javax.inject.Inject
 class MovieDetailsViewModel @Inject constructor(
     private val getMovieGenresUseCase: GetMovieGenresUseCase,
     private val getWatchListUseCase: GetWatchListUseCase,
-    saveMovieToWatchListUseCase: SaveMovieToWatchListUseCase,
-    removeMovieFromWatchListUseCase: RemoveMovieFromWatchListUseCase
-) : ManageWatchListBaseViewModel(saveMovieToWatchListUseCase, removeMovieFromWatchListUseCase) {
+    private val saveMovieToWatchListUseCase: SaveMovieToWatchListUseCase,
+    private val removeMovieFromWatchListUseCase: RemoveMovieFromWatchListUseCase
+) : ViewModel() {
 
     private val _genresResult = MutableLiveData<List<Genre>>()
     val genresResult: LiveData<List<Genre>>
@@ -41,9 +41,9 @@ class MovieDetailsViewModel @Inject constructor(
     fun toggleWatchList(movie: Movie) {
         viewModelScope.launch {
             if (isInWatchList(movie)) {
-                removeFromWatchList(movie.id)
+                removeMovieFromWatchListUseCase.invoke(movie.id)
             } else {
-                saveToWatchList(movie)
+                saveMovieToWatchListUseCase.invoke(movie)
             }
         }
     }

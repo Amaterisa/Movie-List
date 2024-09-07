@@ -1,7 +1,6 @@
 package com.amaterisa.movielistapp.data.mapper
 
 import com.amaterisa.movielistapp.data.source.local.entity.MovieEntity
-import com.amaterisa.movielistapp.data.source.remote.movie.MovieDetailsResponse
 import com.amaterisa.movielistapp.data.source.remote.movie.MovieListResponse
 import com.amaterisa.movielistapp.domain.model.Movie
 import com.amaterisa.movielistapp.utils.ListUtils.transformListToString
@@ -53,22 +52,6 @@ object MovieMapper {
                 genreIds = transformStringToList(it.genreIds),
                 isInWatchList = it.isInWatchList,
                 markWatched = it.markWatched
-            )
-        }
-    }
-
-    fun getMovieFromMovieDetailsResponse(movieDetailsResponse: MovieDetailsResponse): Movie {
-        val genreIds = movieDetailsResponse.genres.map { it.id }
-        return movieDetailsResponse.let {
-            Movie(
-                id = it.id,
-                title = it.title,
-                overview = it.overview ?: "",
-                posterPath = it.posterPath ?: "",
-                backdropPath = it.backdropPath ?: it.posterPath ?: "",
-                releaseDate = it.releaseDate,
-                voteAverage = it.voteAverage,
-                genreIds = genreIds
             )
         }
     }

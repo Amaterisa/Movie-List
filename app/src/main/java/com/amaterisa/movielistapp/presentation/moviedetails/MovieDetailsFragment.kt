@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import com.amaterisa.movielistapp.R
 import com.amaterisa.movielistapp.databinding.FragmentMovieDetailsBinding
 import com.amaterisa.movielistapp.domain.model.Movie
-import com.amaterisa.movielistapp.presentation.base.ManageWatchListBaseFragment
+import com.amaterisa.movielistapp.presentation.base.BaseFragment
 import com.amaterisa.movielistapp.presentation.main.FragmentConfig
 import com.amaterisa.movielistapp.utils.MovieUtils
 import com.amaterisa.movielistapp.utils.MovieUtils.getImageUrl
@@ -18,13 +18,13 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
 @AndroidEntryPoint
-class MovieDetailsFragment : ManageWatchListBaseFragment<MovieDetailsViewModel>() {
+class MovieDetailsFragment : BaseFragment() {
 
     companion object {
         const val TAG = "MovieDetailsFragment"
     }
 
-    override val viewModel: MovieDetailsViewModel by viewModels()
+    private val viewModel: MovieDetailsViewModel by viewModels()
 
     private val binding: FragmentMovieDetailsBinding by lazy {
         FragmentMovieDetailsBinding.inflate(layoutInflater)

@@ -12,19 +12,19 @@ import com.amaterisa.movielistapp.domain.common.Resource
 import com.amaterisa.movielistapp.domain.model.Genre
 import com.amaterisa.movielistapp.domain.model.Movie
 import com.amaterisa.movielistapp.presentation.adapter.LinearItemDecoration
-import com.amaterisa.movielistapp.presentation.base.ManageWatchListBaseFragment
+import com.amaterisa.movielistapp.presentation.base.BaseFragment
 import com.amaterisa.movielistapp.presentation.main.FragmentConfig
 import com.amaterisa.movielistapp.utils.ViewUtils.toVisibility
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : ManageWatchListBaseFragment<HomeViewModel>() {
+class HomeFragment : BaseFragment() {
 
     companion object {
         const val TAG = "HomeFragment"
     }
 
-    override val viewModel: HomeViewModel by viewModels()
+    private val viewModel: HomeViewModel by viewModels()
 
     private val binding: FragmentHomeBinding by lazy {
         FragmentHomeBinding.inflate(layoutInflater)
@@ -115,6 +115,7 @@ class HomeFragment : ManageWatchListBaseFragment<HomeViewModel>() {
             is Resource.Error -> {
                 manageViews(isLoading = false, hasError = true)
             }
+
             else -> manageViews(true)
         }
     }

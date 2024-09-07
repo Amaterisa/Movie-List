@@ -11,8 +11,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.amaterisa.movielistapp.R
-import com.amaterisa.movielistapp.domain.common.Resource
 import com.amaterisa.movielistapp.databinding.FragmentSearchBinding
+import com.amaterisa.movielistapp.domain.common.Resource
 import com.amaterisa.movielistapp.domain.model.Movie
 import com.amaterisa.movielistapp.presentation.adapter.LinearItemDecoration
 import com.amaterisa.movielistapp.presentation.base.BaseFragment
@@ -112,6 +112,7 @@ class SearchFragment : BaseFragment() {
                 adapter.setMovies(movies)
                 manageViews(movies.isEmpty())
             }
+
             else -> {
                 manageViews(isEmpty = true, hasError = true)
             }
@@ -129,7 +130,12 @@ class SearchFragment : BaseFragment() {
     private fun setupSearchView() {
         binding.searchView.run {
             val searchTextView = findViewById<EditText>(androidx.appcompat.R.id.search_src_text)
-            searchTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.font_color))
+            searchTextView.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.font_color
+                )
+            )
             searchTextView.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.gray))
 
             val searchIcon = findViewById<ImageView>(androidx.appcompat.R.id.search_mag_icon)

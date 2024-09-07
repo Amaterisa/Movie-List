@@ -12,18 +12,18 @@ import com.amaterisa.movielistapp.domain.common.Resource
 import com.amaterisa.movielistapp.domain.model.Movie
 import com.amaterisa.movielistapp.presentation.adapter.GridSpaceItemDecoration
 import com.amaterisa.movielistapp.presentation.adapter.MovieListAdapter
-import com.amaterisa.movielistapp.presentation.base.ManageWatchListBaseFragment
+import com.amaterisa.movielistapp.presentation.base.BaseFragment
 import com.amaterisa.movielistapp.presentation.main.FragmentConfig
 import com.amaterisa.movielistapp.utils.ViewUtils.toVisibility
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PopularMoviesFragment : ManageWatchListBaseFragment<PopularMoviesViewModel>() {
+class PopularMoviesFragment : BaseFragment() {
     companion object {
         const val TAG = "PopularMoviesFragment"
     }
 
-    override val viewModel: PopularMoviesViewModel by viewModels()
+    private val viewModel: PopularMoviesViewModel by viewModels()
 
     private val binding: FragmentPopularMoviesBinding by lazy {
         FragmentPopularMoviesBinding.inflate(layoutInflater)

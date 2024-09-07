@@ -15,6 +15,7 @@ import com.amaterisa.movielistapp.databinding.FragmentSearchBinding
 import com.amaterisa.movielistapp.presentation.adapter.LinearItemDecoration
 import com.amaterisa.movielistapp.presentation.base.BaseFragment
 import com.amaterisa.movielistapp.presentation.main.FragmentConfig
+import com.amaterisa.movielistapp.utils.ViewUtils.toVisibility
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -93,6 +94,14 @@ class SearchFragment : BaseFragment() {
     private fun initObservers() {
         viewModel.movieResult.observe(viewLifecycleOwner) {
             adapter.setMovies(it)
+            manageViews(it.isEmpty())
+        }
+    }
+
+    private fun manageViews(isEmpty: Boolean) {
+        binding.run {
+            moviesRv.toVisibility(!isEmpty)
+            noItemsLayout.toVisibility(isEmpty)
         }
     }
 

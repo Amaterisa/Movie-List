@@ -3,6 +3,7 @@
     <dimen name="a_quarter_default_material_margin">4dp</dimen>
     <dimen name="default_material_margin">16dp</dimen>
     <dimen name="double_default_material_margin">32dp</dimen>
+    <dimen name="triple_default_material_margin">48dp</dimen>
     <dimen name="default_padding">24dp</dimen>
     <dimen name="half_default_padding">12dp</dimen>
     <dimen name="a_quarter_default_padding">12dp</dimen>

@@ -15,6 +15,8 @@
     <string name="score_label">Score</string>
     <string name="score_value">%s/10</string>
     <string name="genres_label">Genres</string>
+    <string name="search_no_items">No results found</string>
+    <string name="search_no_items_description">We couldn\'t find what you searched for.\nTry searching again.</string>
     <string name="no_items_title">Wooo, there’s nothing here!</string>
     <string name="no_items_description">You don’t have a list yet, but don’t worry! You can add movies to your list at anytime by clicking the add to list icon on the movie’s card or description page.</string>
 </resources>

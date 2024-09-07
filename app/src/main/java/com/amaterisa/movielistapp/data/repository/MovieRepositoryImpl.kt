@@ -6,6 +6,7 @@ import com.amaterisa.movielistapp.data.mapper.MovieMapper
 import com.amaterisa.movielistapp.data.source.local.dao.GenreDao
 import com.amaterisa.movielistapp.data.source.local.dao.MovieDao
 import com.amaterisa.movielistapp.data.source.remote.MovieApiService
+import com.amaterisa.movielistapp.data.source.remote.movie.MovieListResponse
 import com.amaterisa.movielistapp.domain.common.Result
 import com.amaterisa.movielistapp.domain.model.Genre
 import com.amaterisa.movielistapp.domain.model.Movie
@@ -135,7 +136,9 @@ class MovieRepositoryImpl @Inject constructor(
         return flow {
             try {
                 val response = movieApiService.searchMovie(name)
-                emit(MovieMapper.getMovieFromResponse(response))
+                val movies =
+                    response.results.filter { it.posterPath != null && it.backdropPath != null && it.overview != null }
+                emit(MovieMapper.getMovieFromResponse(MovieListResponse(response.page, movies)))
             } catch (e: Exception) {
                 Log.d(TAG, "error $e")
             }

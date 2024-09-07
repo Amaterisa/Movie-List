@@ -6,4 +6,13 @@
         android:title="@string/search_label"
         android:icon="@drawable/search_btn"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_search"
+        android:iconTint="@color/cherry_dark"
+        android:title="@string/search_label"
+        android:visible="false"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="ifRoom|collapseActionView" />
 </menu>

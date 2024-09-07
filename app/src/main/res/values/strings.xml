@@ -8,6 +8,7 @@
     <string name="added_watch_list_label">Added to my list</string>
     <string name="movie_details_label">Movie Details</string>
     <string name="search_button">Search for movies</string>
+    <string name="search_hint">Search for the movie\'s title…</string>
     <string name="watched_label">Watched</string>
     <string name="mark_watched_label">Mark as watched</string>
     <string name="release_date_label">Release date</string>

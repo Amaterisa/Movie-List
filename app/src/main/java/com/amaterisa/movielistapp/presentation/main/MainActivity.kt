@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Menu
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -118,8 +119,7 @@ class MainActivity : AppCompatActivity(), IMainActivity {
                     true
                 }
 
-                android.R.id.home -> {
-                    onBackPressedDispatcher.onBackPressed()
+                R.id.action_search -> {
                     true
                 }
 
@@ -171,6 +171,14 @@ class MainActivity : AppCompatActivity(), IMainActivity {
 
     private fun showBottomNav(show: Boolean) {
         binding.bottomNavigation.toVisibility(show)
+    }
+
+    private fun showSearchBar(show: Boolean) {
+        val item = binding.toolbar.toolbarLayout.menu.findItem(R.id.action_search)
+        item.isVisible = show
+        if (show) {
+            item.expandActionView()
+        }
     }
 
     override fun setupNavigationLayout(fragmentConfig: FragmentConfig) {

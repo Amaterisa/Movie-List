@@ -1,178 +1,205 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     tools:context=".presentation.moviedetails.MovieDetailsFragment">
 
-    <ImageView
-        android:id="@+id/imv_movie"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:scaleType="fitXY"
-        android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/imv_movie_mask"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/img_mask"
-        app:layout_constraintBottom_toBottomOf="@id/imv_movie" />
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/default_padding"
-        android:layout_marginTop="@dimen/default_padding"
-        android:textColor="@color/font_color"
-        android:textSize="@dimen/title_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imv_movie"
-        tools:text="Movie name" />
-
-    <TextView
-        android:id="@+id/description"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/default_padding"
-        android:layout_marginTop="@dimen/text_margin_top"
-        android:textColor="@color/gray"
-        android:textSize="@dimen/small_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title"
-        tools:text="Movie details" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_watch_list"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/button_height"
-        android:layout_marginTop="@dimen/default_padding"
-        android:background="@drawable/outline_background"
-        android:maxLines="1"
-        android:text="@string/add_watch_list_label"
-        android:textAlignment="center"
-        android:textAllCaps="false"
-        android:textColor="@color/font_color"
-        android:textSize="@dimen/small_size"
-        app:backgroundTint="@color/gray"
-        app:icon="@drawable/ic_add"
-        app:iconGravity="textStart"
-        app:iconPadding="@dimen/icon_padding"
-        app:iconTint="@color/font_color"
-        app:layout_constraintEnd_toEndOf="@id/title"
-        app:layout_constraintStart_toStartOf="@id/title"
-        app:layout_constraintTop_toBottomOf="@id/description"
-        app:rippleColor="@color/font_color" />
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/default_padding"
-        android:backgroundTint="@color/dark_gray"
-        app:cardCornerRadius="8dp"
-        app:layout_constraintEnd_toEndOf="@id/title"
-        app:layout_constraintStart_toStartOf="@id/title"
-        app:layout_constraintTop_toBottomOf="@id/btn_watch_list">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ImageView
+            android:id="@+id/imv_movie"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/movie_details"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/default_material_margin"
-                android:layout_marginTop="@dimen/default_material_margin"
-                android:text="@string/movie_details_label"
-                android:textColor="@color/font_color"
-                android:textSize="@dimen/medium_size"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/imv_movie_mask"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/img_mask"
+            app:layout_constraintBottom_toBottomOf="@id/imv_movie" />
 
-            <TextView
-                android:id="@+id/release_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/half_default_padding"
-                android:text="@string/release_date_label"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/normal_size"
-                app:layout_constraintStart_toStartOf="@id/movie_details"
-                app:layout_constraintTop_toBottomOf="@id/movie_details" />
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/default_padding"
+            android:layout_marginTop="@dimen/default_padding"
+            android:textColor="@color/font_color"
+            android:textSize="@dimen/title_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imv_movie"
+            tools:text="Movie name" />
 
-            <TextView
-                android:id="@+id/release_date_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/default_padding"
-                android:text="@string/release_date_label"
-                android:textColor="@color/font_color"
-                android:textSize="@dimen/normal_size"
-                app:layout_constraintBottom_toBottomOf="@id/release_date"
-                app:layout_constraintStart_toEndOf="@id/release_date"
-                app:layout_constraintTop_toTopOf="@id/release_date"
-                tools:text="22/02/24" />
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/default_padding"
+            android:layout_marginTop="@dimen/text_margin_top"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/small_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            tools:text="Movie details" />
 
-            <TextView
-                android:id="@+id/score"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/half_default_padding"
-                android:text="@string/score_label"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/normal_size"
-                app:layout_constraintStart_toStartOf="@id/movie_details"
-                app:layout_constraintTop_toBottomOf="@id/release_date" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_watch_list"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginTop="@dimen/default_padding"
+            android:background="@drawable/outline_background"
+            android:maxLines="1"
+            android:text="@string/add_watch_list_label"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="@color/font_color"
+            android:textSize="@dimen/small_size"
+            app:backgroundTint="@color/gray"
+            app:icon="@drawable/ic_add"
+            app:iconGravity="textStart"
+            app:iconPadding="@dimen/icon_padding"
+            app:iconTint="@color/font_color"
+            app:layout_constraintEnd_toEndOf="@id/title"
+            app:layout_constraintStart_toStartOf="@id/title"
+            app:layout_constraintTop_toBottomOf="@id/description"
+            app:rippleColor="@color/font_color" />
 
-            <TextView
-                android:id="@+id/score_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/default_padding"
-                android:text="@string/release_date_label"
-                android:textColor="@color/font_color"
-                android:textSize="@dimen/normal_size"
-                app:layout_constraintBottom_toBottomOf="@id/score"
-                app:layout_constraintStart_toEndOf="@id/release_date"
-                app:layout_constraintTop_toTopOf="@id/score"
-                tools:text="2/10" />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_padding"
+            android:backgroundTint="@color/dark_gray"
+            app:cardCornerRadius="8dp"
+            app:layout_constraintEnd_toEndOf="@id/title"
+            app:layout_constraintStart_toStartOf="@id/title"
+            app:layout_constraintTop_toBottomOf="@id/btn_watch_list">
 
-            <TextView
-                android:id="@+id/genres"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/half_default_padding"
-                android:layout_marginBottom="@dimen/default_material_margin"
-                android:text="@string/genres_label"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/normal_size"
-                app:layout_constraintStart_toStartOf="@id/movie_details"
-                app:layout_constraintTop_toBottomOf="@id/score" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/genres_value"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/default_padding"
-                android:layout_marginEnd="@dimen/default_padding"
-                android:layout_marginBottom="@dimen/default_material_margin"
-                android:text="@string/release_date_label"
-                android:textColor="@color/font_color"
-                android:textSize="@dimen/normal_size"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/release_date"
-                app:layout_constraintTop_toTopOf="@id/genres"
-                tools:text="Comedy, romance, animation" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+                <TextView
+                    android:id="@+id/movie_details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/default_material_margin"
+                    android:layout_marginTop="@dimen/default_material_margin"
+                    android:text="@string/movie_details_label"
+                    android:textColor="@color/font_color"
+                    android:textSize="@dimen/medium_size"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
+                <TextView
+                    android:id="@+id/release_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/half_default_padding"
+                    android:text="@string/release_date_label"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/normal_size"
+                    app:layout_constraintStart_toStartOf="@id/movie_details"
+                    app:layout_constraintTop_toBottomOf="@id/movie_details" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/release_date_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/default_padding"
+                    android:text="@string/release_date_label"
+                    android:textColor="@color/font_color"
+                    android:textSize="@dimen/normal_size"
+                    app:layout_constraintBottom_toBottomOf="@id/release_date"
+                    app:layout_constraintStart_toEndOf="@id/release_date"
+                    app:layout_constraintTop_toTopOf="@id/release_date"
+                    tools:text="22/02/24" />
+
+                <TextView
+                    android:id="@+id/score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/half_default_padding"
+                    android:text="@string/score_label"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/normal_size"
+                    app:layout_constraintStart_toStartOf="@id/movie_details"
+                    app:layout_constraintTop_toBottomOf="@id/release_date" />
+
+                <TextView
+                    android:id="@+id/score_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/default_padding"
+                    android:text="@string/release_date_label"
+                    android:textColor="@color/font_color"
+                    android:textSize="@dimen/normal_size"
+                    app:layout_constraintBottom_toBottomOf="@id/score"
+                    app:layout_constraintStart_toEndOf="@id/release_date"
+                    app:layout_constraintTop_toTopOf="@id/score"
+                    tools:text="2/10" />
+
+                <TextView
+                    android:id="@+id/genres"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/half_default_padding"
+                    android:layout_marginBottom="@dimen/default_material_margin"
+                    android:text="@string/genres_label"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/normal_size"
+                    app:layout_constraintStart_toStartOf="@id/movie_details"
+                    app:layout_constraintTop_toBottomOf="@id/score" />
+
+                <TextView
+                    android:id="@+id/genres_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/default_padding"
+                    android:layout_marginEnd="@dimen/default_padding"
+                    android:layout_marginBottom="@dimen/default_material_margin"
+                    android:text="@string/release_date_label"
+                    android:textColor="@color/font_color"
+                    android:textSize="@dimen/normal_size"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/release_date"
+                    app:layout_constraintTop_toTopOf="@id/genres"
+                    tools:text="Comedy, romance, animation" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/details_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="imv_movie, imv_movie_mask, title, description, btn_watch_list, card_view" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            app:layout_constraintTop_toBottomOf="@id/card_view" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:foregroundGravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

@@ -13,7 +13,7 @@ object MovieMapper {
             Movie(
                 id = it.id,
                 title = it.title,
-                overview = it.overview,
+                overview = it.overview ?: "",
                 posterPath = it.posterPath ?: "",
                 backdropPath = it.backdropPath ?: it.posterPath ?: "",
                 releaseDate = it.releaseDate,
@@ -66,9 +66,9 @@ object MovieMapper {
             Movie(
                 id = it.id,
                 title = it.title,
-                overview = it.overview,
-                posterPath = it.posterPath,
-                backdropPath = it.backdropPath,
+                overview = it.overview ?: "",
+                posterPath = it.posterPath ?: "",
+                backdropPath = it.backdropPath ?: it.posterPath ?: "",
                 releaseDate = it.releaseDate,
                 voteAverage = it.voteAverage,
                 genreIds = genreIds

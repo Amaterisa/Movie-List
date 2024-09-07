@@ -15,6 +15,7 @@ import com.amaterisa.movielistapp.presentation.base.BaseFragment
 import com.amaterisa.movielistapp.presentation.main.FragmentConfig
 import com.amaterisa.movielistapp.utils.MovieUtils
 import com.amaterisa.movielistapp.utils.MovieUtils.getImageUrl
+import com.amaterisa.movielistapp.utils.ViewUtils.toVisibility
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
@@ -44,7 +45,7 @@ class MovieDetailsFragment : AddWatchListBaseFragment<MovieDetailsViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initObservers()
-
+        manageViews(true)
         val movieId = arguments?.getLong("movieId")
         movieId?.let { viewModel.getMovieDetails(it) }
     }
@@ -88,11 +89,19 @@ class MovieDetailsFragment : AddWatchListBaseFragment<MovieDetailsViewModel>() {
             btnWatchList.setOnClickListener {
                 toggleWatchListMark(movie.isInWatchList)
             }
+            manageViews(false)
         }
     }
 
     private fun toggleWatchListMark(marked: Boolean) {
         viewModel.toggleWatchList(marked)
+    }
+
+    private fun manageViews(isLoading: Boolean = false) {
+        binding.run {
+            detailsGroup.toVisibility(!isLoading)
+            progressBar.toVisibility(isLoading)
+        }
     }
 
     private fun setupWatchListButton(marked: Boolean) {

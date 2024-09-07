@@ -2,10 +2,7 @@ package com.amaterisa.movielistapp.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.amaterisa.movielistapp.R
 import com.amaterisa.movielistapp.databinding.ItemMovieBinding
 import com.amaterisa.movielistapp.domain.model.Movie
 import com.amaterisa.movielistapp.utils.MovieUtils.getImageUrl
@@ -14,8 +11,7 @@ import com.amaterisa.movielistapp.utils.MovieUtils.loadImageWithGlide
 class MovieListAdapter(
     private val imageWidth: Int,
     private val imageHeight: Int,
-    private val onItemClick: (Movie) -> Unit,
-    private val onWatchlistClick: (Movie) -> Unit
+    private val onItemClick: (Movie) -> Unit
 ) : RecyclerView.Adapter<MovieListAdapter.MovieViewHolder>() {
     private var movieList: MutableList<Movie> = mutableListOf()
 
@@ -25,8 +21,7 @@ class MovieListAdapter(
             movie: Movie,
             imageWidth: Int,
             imageHeight: Int,
-            onItemClick: (Movie) -> Unit,
-            onWatchlistClick: (Movie) -> Unit
+            onItemClick: (Movie) -> Unit
         ) {
             val url = getImageUrl(300, movie.posterPath)
 
@@ -38,24 +33,7 @@ class MovieListAdapter(
 
                 loadImageWithGlide(movieImageView, url)
 
-                setButtonDrawable(addBtn, movie)
-
                 root.setOnClickListener { onItemClick(movie) }
-
-                addBtn.setOnClickListener {
-                    onWatchlistClick(movie)
-                    setButtonDrawable(addBtn, movie)
-                }
-            }
-        }
-
-        private fun setButtonDrawable(view: ImageView, movie: Movie) {
-            val addDrawable = ContextCompat.getDrawable(view.context, R.drawable.remove_btn)
-            val removeDrawable = ContextCompat.getDrawable(view.context, R.drawable.add_btn)
-            if (movie.isInWatchList) {
-                view.setImageDrawable(addDrawable)
-            } else {
-                view.setImageDrawable(removeDrawable)
             }
         }
     }
@@ -66,7 +44,7 @@ class MovieListAdapter(
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        holder.bind(movieList[position], imageWidth, imageHeight, onItemClick, onWatchlistClick)
+        holder.bind(movieList[position], imageWidth, imageHeight, onItemClick)
     }
 
     override fun getItemCount(): Int = movieList.size
@@ -75,14 +53,4 @@ class MovieListAdapter(
         movieList.clear()
         movieList.addAll(movies)
     }
-
-    fun addToWatchList(movie: Movie) {
-        val index = movieList.indexOfFirst { it.id == movie.id }
-        if (index != -1) {
-            movieList[index] = movie
-            notifyItemChanged(index)
-        }
-    }
-
-    fun getMovies(): List<Movie> = movieList.toList()
 }

@@ -33,9 +33,8 @@ class HomeFragment : ManageWatchListBaseFragment<HomeViewModel>() {
     private val moviesByGenreAdapter: MoviesByGenreAdapter by lazy {
         MoviesByGenreAdapter(
             resources.getDimensionPixelSize(R.dimen.home_movie_width),
-            resources.getDimensionPixelSize(R.dimen.home_movie_height),
-            { movie -> goToMovieDetails(movie) },
-            { movie -> onAddToWatchList(movie) })
+            resources.getDimensionPixelSize(R.dimen.home_movie_height)
+        ) { movie -> goToMovieDetails(movie) }
     }
 
     override fun fragmentType() = FragmentConfig.HOME
@@ -51,7 +50,6 @@ class HomeFragment : ManageWatchListBaseFragment<HomeViewModel>() {
         super.onViewCreated(view, savedInstanceState)
         initObservers()
         setupBinding()
-        viewModel.getGenreList()
     }
 
     private fun initObservers() {
@@ -114,17 +112,10 @@ class HomeFragment : ManageWatchListBaseFragment<HomeViewModel>() {
 
     private fun handleGenreResource(resource: Resource<List<Genre>>) {
         when (resource) {
-            is Resource.Loading -> {
-                manageViews(true)
-            }
-
-            is Resource.Success -> {
-                viewModel.getMoviesByGenre(resource.data)
-            }
-
             is Resource.Error -> {
                 manageViews(isLoading = false, hasError = true)
             }
+            else -> manageViews(true)
         }
     }
 

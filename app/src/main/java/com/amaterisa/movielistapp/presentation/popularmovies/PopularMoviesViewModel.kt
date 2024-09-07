@@ -27,6 +27,10 @@ class PopularMoviesViewModel @Inject constructor(
     val movieResult: LiveData<Resource<List<Movie>>>
         get() = _movieResult
 
+    init {
+        getPopularMovies()
+    }
+
     fun getPopularMovies() {
         viewModelScope.launch {
             getPopularMoviesUseCase.invoke().collect {

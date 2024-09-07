@@ -18,15 +18,5 @@
             android:layout_height="@dimen/top_movie_height"
             android:scaleType="centerCrop" />
 
-        <ImageView
-            android:id="@+id/add_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/a_quarter_default_material_margin"
-            android:layout_marginEnd="@dimen/a_quarter_default_material_margin"
-            android:visibility="gone"
-            android:layout_gravity="top|end"
-            android:src="@drawable/remove_btn" />
-
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

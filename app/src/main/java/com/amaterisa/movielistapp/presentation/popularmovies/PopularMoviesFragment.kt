@@ -32,9 +32,8 @@ class PopularMoviesFragment : ManageWatchListBaseFragment<PopularMoviesViewModel
     private val movieListAdapter: MovieListAdapter by lazy {
         MovieListAdapter(
             resources.getDimensionPixelSize(R.dimen.top_movie_width),
-            resources.getDimensionPixelSize(R.dimen.top_movie_height),
-            { movie -> goToMovieDetails(movie) },
-            { movie -> onAddToWatchList(movie) })
+            resources.getDimensionPixelSize(R.dimen.top_movie_height)
+        ) { movie -> goToMovieDetails(movie) }
     }
 
     override fun fragmentType() = FragmentConfig.POPULAR_MOVIES
@@ -50,8 +49,6 @@ class PopularMoviesFragment : ManageWatchListBaseFragment<PopularMoviesViewModel
         super.onViewCreated(view, savedInstanceState)
         initObservers()
         setupBinding()
-        manageViews(true)
-        viewModel.getPopularMovies()
     }
 
     private fun setupBinding() {

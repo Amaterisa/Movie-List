@@ -22,6 +22,10 @@ class WatchListViewModel @Inject constructor(
     val movieResult: LiveData<List<Movie>>
         get() = _movieResult
 
+    init {
+        getWatchListMovies()
+    }
+
     fun getWatchListMovies() {
         viewModelScope.launch {
             getWatchListUseCase.invoke().collect {

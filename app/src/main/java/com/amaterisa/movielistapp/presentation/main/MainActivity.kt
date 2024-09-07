@@ -6,10 +6,11 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.plusAssign
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -41,6 +42,8 @@ class MainActivity : AppCompatActivity(), IMainActivity {
 
     private var navController: NavController? = null
     private var bottomNav: BottomNavigationView? = null
+
+    private var currentNavController: LiveData<NavController>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,42 +90,12 @@ class MainActivity : AppCompatActivity(), IMainActivity {
             bottomNav?.setupWithNavController(it)
         }
 
-        bottomNav?.setOnItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.nav_home -> {
-                    navController?.navigate(R.id.nav_home)
-                    //loadFragment(FragmentConfig.HOME)
-                    true
-                }
-
-                R.id.nav_popular -> {
-                    navController?.navigate(R.id.nav_popular)
-                    //loadFragment(FragmentConfig.POPULAR_MOVIES)
-                    true
-                }
-
-                R.id.nav_list -> {
-                    navController?.navigate(R.id.nav_list)
-                    //loadFragment(FragmentConfig.WATCH_LIST)
-                    true
-                }
-
-                else -> false
-            }
-        }
-
         binding.toolbar.toolbarLayout.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_search -> {
                     goToSearch()
-                    //loadFragment(FragmentConfig.SEARCH, true)
                     true
                 }
-
-                R.id.action_search -> {
-                    true
-                }
-
                 else -> false
             }
         }
@@ -177,22 +150,18 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         binding.run {
             toolbar.toolbarLayout.title = fragmentConfig.fragmentName
             when (fragmentConfig) {
-                FragmentConfig.HOME, FragmentConfig.POPULAR_MOVIES, FragmentConfig.WATCH_LIST -> {
+                FragmentConfig.HOME,
+                FragmentConfig.POPULAR_MOVIES,
+                FragmentConfig.WATCH_LIST -> {
                     showBackButton(false)
                     showMenuOptions(true)
                     showBottomNav(true)
                 }
-
+                FragmentConfig.MOVIE_DETAILS,
                 FragmentConfig.SEARCH -> {
                     showBackButton(true)
                     showMenuOptions(false)
                     showBottomNav(false)
-                }
-
-                FragmentConfig.MOVIE_DETAILS -> {
-                    showBackButton(true)
-                    showMenuOptions(false)
-                    showBottomNav(true)
                 }
             }
         }

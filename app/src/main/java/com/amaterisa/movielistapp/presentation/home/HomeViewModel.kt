@@ -34,10 +34,17 @@ class HomeViewModel @Inject constructor(
     val movieResult: LiveData<Resource<Map<Genre, List<Movie>>>>
         get() = _movieResult
 
+    init {
+        getGenreList()
+    }
+
     fun getGenreList() {
         viewModelScope.launch {
             getGenreUseCase.invoke().collect {
                 _genreListResult.postValue(it)
+                if (it is Resource.Success) {
+                    getMoviesByGenre(it.data)
+                }
             }
         }
     }

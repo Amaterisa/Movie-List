@@ -52,12 +52,6 @@ class WatchListFragment : BaseFragment() {
         initObservers()
     }
 
-    override fun onResume() {
-        super.onResume()
-        manageViews(isListEmpty = true, isLoading = true)
-        viewModel.getWatchListMovies()
-    }
-
     private fun setupBinding() {
         binding.run {
             if (moviesRv.adapter == null) {
@@ -95,11 +89,10 @@ class WatchListFragment : BaseFragment() {
         }
     }
 
-    private fun manageViews(isListEmpty: Boolean, isLoading: Boolean = false) {
+    private fun manageViews(isListEmpty: Boolean) {
         binding.run {
-            noItemsLayout.toVisibility(isListEmpty && !isLoading)
-            moviesRv.toVisibility(!isListEmpty && !isLoading)
-            progressBar.toVisibility(isLoading)
+            noItemsLayout.toVisibility(isListEmpty)
+            moviesRv.toVisibility(!isListEmpty)
         }
     }
 

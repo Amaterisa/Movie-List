@@ -7,7 +7,6 @@ import com.amaterisa.movielistapp.databinding.ItemMovieSearchBinding
 import com.amaterisa.movielistapp.domain.model.Movie
 import com.amaterisa.movielistapp.utils.MovieUtils.getImageUrl
 import com.amaterisa.movielistapp.utils.MovieUtils.loadImageWithGlide
-import com.bumptech.glide.Glide
 
 class SearchMovieAdapter(
     private val onItemClick: (Movie) -> Unit

@@ -30,8 +30,8 @@ class HomeViewModel @Inject constructor(
     val genreListResult: LiveData<Resource<List<Genre>>>
         get() = _genreListResult
 
-    private val _movieResult = MutableLiveData<Pair<Genre, Resource<List<Movie>>>>()
-    val movieResult: LiveData<Pair<Genre, Resource<List<Movie>>>>
+    private val _movieResult = MutableLiveData<Resource<Map<Genre, List<Movie>>>>()
+    val movieResult: LiveData<Resource<Map<Genre, List<Movie>>>>
         get() = _movieResult
 
     fun getGenreList() {
@@ -42,11 +42,10 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun getMoviesByGenre(genre: Genre) {
+    fun getMoviesByGenre(genres: List<Genre>) {
         viewModelScope.launch {
-            getMoviesByGetGenreUseCase.invoke(genre).collect {
-                val pair = Pair(genre, it)
-                _movieResult.postValue(pair)
+            getMoviesByGetGenreUseCase.invoke(genres).collect {
+                _movieResult.postValue(it)
             }
         }
     }

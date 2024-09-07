@@ -10,7 +10,6 @@ import com.amaterisa.movielistapp.databinding.ItemMovieBinding
 import com.amaterisa.movielistapp.domain.model.Movie
 import com.amaterisa.movielistapp.utils.MovieUtils.getImageUrl
 import com.amaterisa.movielistapp.utils.MovieUtils.loadImageWithGlide
-import com.bumptech.glide.Glide
 
 class MovieListAdapter(
     private val imageWidth: Int,

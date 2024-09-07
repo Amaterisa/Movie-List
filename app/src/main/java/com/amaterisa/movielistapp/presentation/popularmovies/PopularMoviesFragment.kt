@@ -56,21 +56,23 @@ class PopularMoviesFragment : ManageWatchListBaseFragment<PopularMoviesViewModel
 
     private fun setupBinding() {
         binding.run {
-            moviesRv.adapter = movieListAdapter
-            val spaceInPixels = resources.getDimensionPixelSize(R.dimen.half_default_padding)
-            moviesRv.addItemDecoration(GridSpaceItemDecoration(spaceInPixels))
+            if (moviesRv.adapter == null) {
+                moviesRv.adapter = movieListAdapter
+                val spaceInPixels = resources.getDimensionPixelSize(R.dimen.half_default_padding)
+                moviesRv.addItemDecoration(GridSpaceItemDecoration(spaceInPixels))
 
-            moviesRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
+                moviesRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        super.onScrolled(recyclerView, dx, dy)
 
-                    if (dy > 0) {
-                        btnTop.visibility = View.VISIBLE
-                    } else if (!recyclerView.canScrollVertically(-1)) {
-                        btnTop.visibility = View.GONE
+                        if (dy > 0) {
+                            btnTop.visibility = View.VISIBLE
+                        } else if (!recyclerView.canScrollVertically(-1)) {
+                            btnTop.visibility = View.GONE
+                        }
                     }
-                }
-            })
+                })
+            }
 
             btnTop.setOnClickListener {
                 moviesRv.smoothScrollToPosition(0)
@@ -84,19 +86,21 @@ class PopularMoviesFragment : ManageWatchListBaseFragment<PopularMoviesViewModel
 
     private fun initObservers() {
         viewModel.movieResult.observe(viewLifecycleOwner) {
-           handleMoviesResource(it)
+            handleMoviesResource(it)
         }
     }
 
     private fun handleMoviesResource(resource: Resource<List<Movie>>) {
-        when(resource) {
+        when (resource) {
             is Resource.Loading -> {
                 manageViews(true)
             }
+
             is Resource.Success -> {
                 movieListAdapter.setMovies(resource.data)
                 manageViews(false)
             }
+
             is Resource.Error -> {
                 manageViews(isLoading = false, hasError = true)
             }

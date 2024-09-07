@@ -66,21 +66,23 @@ class HomeFragment : ManageWatchListBaseFragment<HomeViewModel>() {
 
     private fun setupBinding() {
         binding.run {
-            genresRv.adapter = moviesByGenreAdapter
-            val spaceInPixels = resources.getDimensionPixelSize(R.dimen.default_padding)
-            genresRv.addItemDecoration(LinearItemDecoration(spaceInPixels, true))
+            if (genresRv.adapter == null) {
+                genresRv.adapter = moviesByGenreAdapter
+                val spaceInPixels = resources.getDimensionPixelSize(R.dimen.default_padding)
+                genresRv.addItemDecoration(LinearItemDecoration(spaceInPixels, true))
 
-            genresRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
+                genresRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        super.onScrolled(recyclerView, dx, dy)
 
-                    if (dy > 0) {
-                        btnTop.visibility = View.VISIBLE
-                    } else if (!recyclerView.canScrollVertically(-1)) {
-                        btnTop.visibility = View.GONE
+                        if (dy > 0) {
+                            btnTop.visibility = View.VISIBLE
+                        } else if (!recyclerView.canScrollVertically(-1)) {
+                            btnTop.visibility = View.GONE
+                        }
                     }
-                }
-            })
+                })
+            }
 
             btnTop.setOnClickListener {
                 genresRv.smoothScrollToPosition(0)
@@ -92,18 +94,18 @@ class HomeFragment : ManageWatchListBaseFragment<HomeViewModel>() {
         }
     }
 
-    private fun handleMoviesResource(resource: Pair<Genre, Resource<List<Movie>>>) {
-        when(val res = resource.second) {
+    private fun handleMoviesResource(resource: Resource<Map<Genre, List<Movie>>>) {
+        when (resource) {
             is Resource.Loading -> {
                 manageViews(true)
             }
-            is Resource.Success -> {
-                val movie = res.data
-                val pair = Pair(resource.first, movie)
-                moviesByGenreAdapter.setMoviesByGenre(pair)
-                manageViews(isLoading = false, hasError = false)
 
+            is Resource.Success -> {
+                val movieMap = resource.data
+                moviesByGenreAdapter.setMoviesByGenre(movieMap)
+                manageViews(isLoading = false, hasError = false)
             }
+
             is Resource.Error -> {
                 manageViews(isLoading = false, hasError = true)
             }
@@ -111,15 +113,15 @@ class HomeFragment : ManageWatchListBaseFragment<HomeViewModel>() {
     }
 
     private fun handleGenreResource(resource: Resource<List<Genre>>) {
-        when(resource) {
+        when (resource) {
             is Resource.Loading -> {
                 manageViews(true)
             }
+
             is Resource.Success -> {
-                for (genre in resource.data) {
-                    viewModel.getMoviesByGenre(genre)
-                }
+                viewModel.getMoviesByGenre(resource.data)
             }
+
             is Resource.Error -> {
                 manageViews(isLoading = false, hasError = true)
             }

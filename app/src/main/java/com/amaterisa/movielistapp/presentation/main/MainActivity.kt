@@ -4,11 +4,12 @@ import android.os.Bundle
 import android.view.Menu
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.plusAssign
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -83,7 +84,6 @@ class MainActivity : AppCompatActivity(), IMainActivity {
             binding.toolbar.toolbarLayout.setupWithNavController(it, appBarConfiguration)
             NavigationUI.setupWithNavController(binding.bottomNavigation, it)
             setupActionBarWithNavController(it, appBarConfiguration)
-
             bottomNav?.setupWithNavController(it)
         }
 
@@ -227,5 +227,12 @@ class MainActivity : AppCompatActivity(), IMainActivity {
             FragmentConfig.SEARCH -> SearchFragment()
             FragmentConfig.MOVIE_DETAILS -> MovieDetailsFragment()
         }
+    }
+
+    private fun getNavOptions(): NavOptions {
+        return NavOptions.Builder()
+            .setLaunchSingleTop(true)   // Prevent recreation of the same fragment
+            .setPopUpTo(R.id.nav_graph, false)  // Avoid popping the backstack
+            .build()
     }
 }

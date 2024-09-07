@@ -60,21 +60,23 @@ class WatchListFragment : BaseFragment() {
 
     private fun setupBinding() {
         binding.run {
-            moviesRv.adapter = watchListAdapter
-            val spaceInPixels = resources.getDimensionPixelSize(R.dimen.half_default_padding)
-            moviesRv.addItemDecoration(LinearItemDecoration(spaceInPixels, true))
+            if (moviesRv.adapter == null) {
+                moviesRv.adapter = watchListAdapter
+                val spaceInPixels = resources.getDimensionPixelSize(R.dimen.half_default_padding)
+                moviesRv.addItemDecoration(LinearItemDecoration(spaceInPixels, true))
 
-            moviesRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
+                moviesRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        super.onScrolled(recyclerView, dx, dy)
 
-                    if (dy > 0) {
-                        btnTop.visibility = View.VISIBLE
-                    } else if (!recyclerView.canScrollVertically(-1)) {
-                        btnTop.visibility = View.GONE
+                        if (dy > 0) {
+                            btnTop.visibility = View.VISIBLE
+                        } else if (!recyclerView.canScrollVertically(-1)) {
+                            btnTop.visibility = View.GONE
+                        }
                     }
-                }
-            })
+                })
+            }
 
             btnTop.setOnClickListener {
                 moviesRv.smoothScrollToPosition(0)

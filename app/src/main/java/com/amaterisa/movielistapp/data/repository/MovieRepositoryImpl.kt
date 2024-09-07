@@ -12,10 +12,12 @@ import com.amaterisa.movielistapp.domain.model.Movie
 import com.amaterisa.movielistapp.domain.repository.MovieRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -75,25 +77,31 @@ class MovieRepositoryImpl @Inject constructor(
             emit(Resource.Loading)
             val genreEntities = genreDao.getAll()
             if (genreEntities.isNotEmpty()) {
-                emit(Resource.Success(GenreMapper.getGenreListFromEntity(genreEntities)))
+                val genres = GenreMapper.getGenreListFromEntity(genreEntities)
+                emit(Resource.Success(genres.sortedBy { it.name }))
             } else {
                 val result = getGenreListRemote()
                 if (result is Resource.Success) {
-                    saveGenres(result.data)
+                    saveGenres(result.data.sortedBy { it.name })
                 }
                 emit(result)
             }
         }.flowOn(Dispatchers.IO)
     }
 
-    override fun getMoviesByGenre(genre: Genre): Flow<Resource<List<Movie>>> {
+    override fun getMoviesByGenre(genres: List<Genre>): Flow<Resource<Map<Genre, List<Movie>>>> {
         return flow {
             emit(Resource.Loading)
-            val result = getMoviesByGenreRemote(genre)
-            if (result is Resource.Success) {
-                saveMovies(result.data)
+
+            val genreFlow = genres.asFlow().map { genre ->
+                val result = getMoviesByGenreRemote(genre)
+                genre to result
+            }.toList()
+
+            val genreMovieMap = genreFlow.associate { (genre, resource) ->
+                genre to (if (resource is Resource.Success) resource.data else emptyList())
             }
-            emit(result)
+            emit(Resource.Success(genreMovieMap))
         }.flowOn(Dispatchers.IO)
     }
 

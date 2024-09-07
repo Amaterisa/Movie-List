@@ -16,21 +16,14 @@ class MoviesByGenreAdapter(
     private val onItemClick: (Movie) -> Unit,
     private val onWatchlistClick: (Movie) -> Unit
 ) : RecyclerView.Adapter<MoviesByGenreAdapter.MoviesByGenreViewHolder>() {
-    private var moviesByGenre: MutableMap<String, MutableList<Movie>> = mutableMapOf()
-    private var genres: MutableList<String> = mutableListOf()
+    private var moviesByGenre: MutableMap<Genre, List<Movie>> = mutableMapOf()
 
     class MoviesByGenreViewHolder(private val binding: ItemHomeMovieByGenreBinding) :
         RecyclerView.ViewHolder(binding.root) {
         private var adapter: MovieListAdapter? = null
 
-        init {
-            val spaceInPixels =
-                binding.root.context.resources.getDimensionPixelSize(R.dimen.a_quarter_default_padding)
-            binding.moviesRv.addItemDecoration(LinearItemDecoration(spaceInPixels, false))
-        }
-
         fun bind(
-            genre: String,
+            genre: Genre,
             movies: List<Movie>,
             imageWidth: Int,
             imageHeight: Int,
@@ -38,12 +31,17 @@ class MoviesByGenreAdapter(
             onWatchlistClick: (Movie) -> Unit,
         ) {
             binding.run {
-                txvGenre.text = genre
-                adapter =
-                    MovieListAdapter(imageWidth, imageHeight, onItemClick, onWatchlistClick)
-                adapter?.setMovies(movies)
-                binding.moviesRv.adapter = adapter
+                txvGenre.text = genre.name
+                if (binding.moviesRv.adapter == null) {
+                    val spaceInPixels =
+                        binding.root.context.resources.getDimensionPixelSize(R.dimen.a_quarter_default_padding)
+                    binding.moviesRv.addItemDecoration(LinearItemDecoration(spaceInPixels, false))
 
+                    adapter =
+                        MovieListAdapter(imageWidth, imageHeight, onItemClick, onWatchlistClick)
+                    adapter?.setMovies(movies)
+                    binding.moviesRv.adapter = adapter
+                }
             }
         }
     }
@@ -55,7 +53,7 @@ class MoviesByGenreAdapter(
     }
 
     override fun onBindViewHolder(holder: MoviesByGenreViewHolder, position: Int) {
-        val genre = genres[position]
+        val genre = moviesByGenre.keys.elementAt(position) // Get genre by position
         val movies = moviesByGenre[genre] ?: emptyList()
         holder.bind(
             genre,
@@ -68,22 +66,11 @@ class MoviesByGenreAdapter(
     }
 
     override fun getItemCount(): Int {
-        return genres.size
+        return moviesByGenre.keys.size
     }
 
-    fun setMoviesByGenre(movies: Pair<Genre, List<Movie>>) {
-        val genre = movies.first.name
-        val isNewGenre = !moviesByGenre.containsKey(genre)
-
-        if (isNewGenre) {
-            moviesByGenre[genre] = movies.second.toMutableList()
-            genres.add(genre)
-            notifyItemInserted(genres.size - 1)
-        } else {
-            val existingMovies = moviesByGenre[genre]
-            existingMovies?.clear()
-            existingMovies?.addAll(movies.second)
-            notifyItemChanged(genres.indexOf(genre))
-        }
+    fun setMoviesByGenre(movies: Map<Genre, List<Movie>> = emptyMap()) {
+        moviesByGenre = movies.toMutableMap()
+        notifyDataSetChanged()
     }
 }

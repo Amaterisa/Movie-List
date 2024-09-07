@@ -18,7 +18,7 @@ interface MovieRepository {
 
     fun getGenreList(): Flow<Resource<List<Genre>>>
 
-    fun getMoviesByGenre(genre: Genre): Flow<Resource<List<Movie>>>
+    fun getMoviesByGenre(genre: List<Genre>): Flow<Resource<Map<Genre, List<Movie>>>>
 
     fun getMovieDetails(id: Long): Flow<Resource<Movie?>>
 

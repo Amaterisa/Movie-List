@@ -13,19 +13,19 @@ Welcome to Movie List App, a sleek and modern Android application where you can 
 
 ## Tech Stack
 
-**Programming Language:** Kotlin
+- **Programming Language:** Kotlin
 
-**Architecture:** MVVM (Model-View-ViewModel) with Clean Architecture
+- **Architecture:** MVVM (Model-View-ViewModel) with Clean Architecture
 
-**Dependency Injection:** Hilt
+- **Dependency Injection:** Hilt
 
-**Networking:** Retrofit for REST API communication
+- **Networking:** Retrofit for REST API communication
 
-**Database:** Room for local persistence
+- **Database:** Room for local persistence
 
-**Concurrency:** Kotlin Coroutines for managing background tasks
+- **Concurrency:** Kotlin Coroutines for managing background tasks
 
-**Flow:** For reactive and asynchronous stream handling
+- **Flow:** For reactive and asynchronous stream handling
 
 
 ## Project Structure

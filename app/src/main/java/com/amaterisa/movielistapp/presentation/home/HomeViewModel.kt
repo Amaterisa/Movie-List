@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.amaterisa.movielistapp.domain.common.Resource
 import com.amaterisa.movielistapp.domain.model.Genre
 import com.amaterisa.movielistapp.domain.model.Movie
-import com.amaterisa.movielistapp.domain.usecase.GetGenreUseCase
+import com.amaterisa.movielistapp.domain.usecase.GetGenresUseCase
 import com.amaterisa.movielistapp.domain.usecase.GetMoviesByGenreUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getGenreUseCase: GetGenreUseCase,
+    private val getGenresUseCase: GetGenresUseCase,
     private val getMoviesByGetGenreUseCase: GetMoviesByGenreUseCase
 ) : ViewModel() {
     companion object {
@@ -36,7 +36,7 @@ class HomeViewModel @Inject constructor(
 
     fun getGenreList() {
         viewModelScope.launch {
-            getGenreUseCase.invoke().collect {
+            getGenresUseCase.invoke().collect {
                 _genreListResult.postValue(it)
                 if (it is Resource.Success) {
                     getMoviesByGenre(it.data)
@@ -45,7 +45,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun getMoviesByGenre(genres: List<Genre>) {
+    private fun getMoviesByGenre(genres: List<Genre>) {
         viewModelScope.launch {
             getMoviesByGetGenreUseCase.invoke(genres).collect {
                 _movieResult.postValue(it)

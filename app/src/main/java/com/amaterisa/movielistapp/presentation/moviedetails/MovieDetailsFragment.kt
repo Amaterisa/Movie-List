@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import com.amaterisa.movielistapp.R
 import com.amaterisa.movielistapp.databinding.FragmentMovieDetailsBinding
+import com.amaterisa.movielistapp.domain.common.Resource
 import com.amaterisa.movielistapp.domain.model.Movie
 import com.amaterisa.movielistapp.presentation.base.BaseFragment
 import com.amaterisa.movielistapp.presentation.main.FragmentConfig
@@ -54,8 +55,8 @@ class MovieDetailsFragment : BaseFragment() {
         viewModel.genresResult.observe(viewLifecycleOwner) { genres ->
             val movie = sharedViewModel.selectedMovie
             movie.value?.let {
-                if (it.genreIds.isNotEmpty()) {
-                    val genresNames = MovieUtils.getGenreNames(it.genreIds, genres)
+                if (it.genreIds.isNotEmpty() && genres is Resource.Success) {
+                    val genresNames = MovieUtils.getGenreNames(it.genreIds, genres.data)
                     binding.genresValue.text = genresNames
                 }
             }

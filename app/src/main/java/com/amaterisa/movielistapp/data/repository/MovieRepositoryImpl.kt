@@ -101,15 +101,13 @@ class MovieRepositoryImpl @Inject constructor(
             val genreMovieMap = genreFlow.associate { (genre, resource) ->
                 genre to (if (resource is Resource.Success) resource.data else emptyList())
             }
-            emit(Resource.Success(genreMovieMap))
+            val filteredMovies = genreMovieMap.filter { it.value.isNotEmpty() }
+            if (filteredMovies.isEmpty()) {
+                emit(Resource.Error(Exception("Failed to get movies")))
+            } else {
+                emit(Resource.Success(genreMovieMap))
+            }
         }.flowOn(Dispatchers.IO)
-    }
-
-    override suspend fun saveMovies(movies: List<Movie>) {
-        withContext(Dispatchers.IO) {
-            val entities = movies.map { MovieMapper.getMovieEntityFromMovie(it) }
-            movieDao.insertAll(entities)
-        }
     }
 
     override fun getAllGenres(): Flow<List<Genre>> {

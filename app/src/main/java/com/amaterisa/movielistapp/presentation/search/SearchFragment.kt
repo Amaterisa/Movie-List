@@ -88,6 +88,9 @@ class SearchFragment : BaseFragment() {
                 override fun onQueryTextChange(newText: String?): Boolean {
                     newText?.let {
                         viewModel.updateSearchQuery(it)
+                        if (it.isEmpty()) {
+                            manageViews(isEmpty = true, hasError = false, isQueryEmpty = true)
+                        }
                     }
                     return true
                 }
@@ -119,11 +122,11 @@ class SearchFragment : BaseFragment() {
         }
     }
 
-    private fun manageViews(isEmpty: Boolean, hasError: Boolean = false) {
+    private fun manageViews(isEmpty: Boolean, hasError: Boolean = false, isQueryEmpty: Boolean = false) {
         binding.run {
-            moviesRv.toVisibility(!isEmpty && !hasError)
-            noItemsLayout.toVisibility(isEmpty && !hasError)
-            errorLayout.errorLayout.toVisibility(hasError)
+            moviesRv.toVisibility(!isEmpty && !hasError && !isQueryEmpty)
+            noItemsLayout.toVisibility(isEmpty && !hasError && !isQueryEmpty)
+            errorLayout.errorLayout.toVisibility(hasError && !isQueryEmpty)
         }
     }
 

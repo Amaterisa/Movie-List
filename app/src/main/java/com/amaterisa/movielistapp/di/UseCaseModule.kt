@@ -1,8 +1,7 @@
 package com.amaterisa.movielistapp.di
 
 import com.amaterisa.movielistapp.domain.repository.MovieRepository
-import com.amaterisa.movielistapp.domain.usecase.GetGenreUseCase
-import com.amaterisa.movielistapp.domain.usecase.GetMovieGenresUseCase
+import com.amaterisa.movielistapp.domain.usecase.GetGenresUseCase
 import com.amaterisa.movielistapp.domain.usecase.GetMoviesByGenreUseCase
 import com.amaterisa.movielistapp.domain.usecase.GetPopularMoviesUseCase
 import com.amaterisa.movielistapp.domain.usecase.GetWatchListUseCase
@@ -27,7 +26,7 @@ object UseCaseModule {
     @Singleton
     @Provides
     fun provideGetGenreUseCase(movieRepository: MovieRepository) =
-        GetGenreUseCase(movieRepository)
+        GetGenresUseCase(movieRepository)
 
     @Singleton
     @Provides
@@ -53,11 +52,6 @@ object UseCaseModule {
     @Provides
     fun provideMarkWatchListMovieUseCase(movieRepository: MovieRepository) =
         MarkWatchListMovieUseCase(movieRepository)
-
-    @Singleton
-    @Provides
-    fun provideGetMovieGenresUseCase(movieRepository: MovieRepository) =
-        GetMovieGenresUseCase(movieRepository)
 
     @Singleton
     @Provides

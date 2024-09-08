@@ -4,9 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.amaterisa.movielistapp.domain.common.Resource
 import com.amaterisa.movielistapp.domain.model.Genre
 import com.amaterisa.movielistapp.domain.model.Movie
-import com.amaterisa.movielistapp.domain.usecase.GetMovieGenresUseCase
+import com.amaterisa.movielistapp.domain.usecase.GetGenresUseCase
 import com.amaterisa.movielistapp.domain.usecase.GetWatchListUseCase
 import com.amaterisa.movielistapp.domain.usecase.RemoveMovieFromWatchListUseCase
 import com.amaterisa.movielistapp.domain.usecase.SaveMovieToWatchListUseCase
@@ -16,14 +17,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor(
-    private val getMovieGenresUseCase: GetMovieGenresUseCase,
+    private val getGenresUseCase: GetGenresUseCase,
     private val getWatchListUseCase: GetWatchListUseCase,
     private val saveMovieToWatchListUseCase: SaveMovieToWatchListUseCase,
     private val removeMovieFromWatchListUseCase: RemoveMovieFromWatchListUseCase
 ) : ViewModel() {
 
-    private val _genresResult = MutableLiveData<List<Genre>>()
-    val genresResult: LiveData<List<Genre>>
+    private val _genresResult = MutableLiveData<Resource<List<Genre>>>()
+    val genresResult: LiveData<Resource<List<Genre>>>
         get() = _genresResult
 
     private val _watchListResult = MutableLiveData<List<Movie>>()
@@ -50,7 +51,7 @@ class MovieDetailsViewModel @Inject constructor(
 
     fun getMovieGenres() {
         viewModelScope.launch {
-            getMovieGenresUseCase.invoke().collect {
+            getGenresUseCase.invoke().collect {
                 _genresResult.postValue(it)
             }
         }

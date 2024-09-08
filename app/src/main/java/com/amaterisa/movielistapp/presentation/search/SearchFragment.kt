@@ -97,7 +97,7 @@ class SearchFragment : BaseFragment() {
             })
 
             errorLayout.btnRetry.setOnClickListener {
-                viewModel.updateSearchQuery(searchView.query.toString())
+                viewModel.searchMovie(searchView.query.toString())
             }
         }
     }

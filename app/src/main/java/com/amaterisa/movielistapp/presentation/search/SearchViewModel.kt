@@ -41,7 +41,7 @@ class SearchViewModel @Inject constructor(
         searchQuery.value = query
     }
 
-    private fun searchMovie(name: String) {
+    fun searchMovie(name: String) {
         viewModelScope.launch {
             searchMovieUseCase.invoke(name).collect {
                 _movieResult.postValue(it)

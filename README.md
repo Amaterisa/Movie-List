@@ -1,6 +1,6 @@
 # Movie List App
 
-Welcome to Movie List App, a sleek and modern Android application where you can explore, search, and manage your favorite movies with ease. Leveraging Clean Architecture principles, the app ensures scalability, maintainability, and clear separation of concerns.
+The Movie List App is a modern and simple to use android application where you can explore, search, and manage your favorite movies in a personalized list, even marking a movie as watched to keep track. Leveraging Clean Architecture principles and clear separation of concerns, the app ensures scalability and maintainability, keeping it easy to continue on with the development process and creation of new features.
 
 
 ## Features

@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.amaterisa.movielistapp.databinding.ItemMovieSearchBinding
 import com.amaterisa.movielistapp.domain.model.Movie
-import com.amaterisa.movielistapp.utils.MovieUtils.getImageUrl
-import com.amaterisa.movielistapp.utils.MovieUtils.loadImageWithGlide
+import com.amaterisa.movielistapp.presentation.utils.MovieUtils.getImageUrl
+import com.amaterisa.movielistapp.presentation.utils.MovieUtils.loadImageWithGlide
 
 class SearchMovieAdapter(
     private val onItemClick: (Movie) -> Unit

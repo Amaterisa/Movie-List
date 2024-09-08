@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.amaterisa.movielistapp.R
 import com.amaterisa.movielistapp.databinding.ItemWatchListMovieBinding
 import com.amaterisa.movielistapp.domain.model.Movie
-import com.amaterisa.movielistapp.utils.MovieUtils.getImageUrl
-import com.amaterisa.movielistapp.utils.MovieUtils.loadImageWithGlide
+import com.amaterisa.movielistapp.presentation.utils.MovieUtils.getImageUrl
+import com.amaterisa.movielistapp.presentation.utils.MovieUtils.loadImageWithGlide
 import com.google.android.material.button.MaterialButton
 
 class WatchListAdapter(

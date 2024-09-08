@@ -3,8 +3,8 @@ package com.amaterisa.movielistapp.data.mapper
 import com.amaterisa.movielistapp.data.source.local.entity.MovieEntity
 import com.amaterisa.movielistapp.data.source.remote.movie.MovieListResponse
 import com.amaterisa.movielistapp.domain.model.Movie
-import com.amaterisa.movielistapp.utils.ListUtils.transformListToString
-import com.amaterisa.movielistapp.utils.ListUtils.transformStringToList
+import com.amaterisa.movielistapp.data.utils.ListUtils.transformListToString
+import com.amaterisa.movielistapp.data.utils.ListUtils.transformStringToList
 
 object MovieMapper {
     fun getMovieFromResponse(movieListResponse: MovieListResponse): List<Movie> {

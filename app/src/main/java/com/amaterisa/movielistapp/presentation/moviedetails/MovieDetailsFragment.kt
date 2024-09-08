@@ -12,9 +12,9 @@ import com.amaterisa.movielistapp.domain.common.Resource
 import com.amaterisa.movielistapp.domain.model.Movie
 import com.amaterisa.movielistapp.presentation.base.BaseFragment
 import com.amaterisa.movielistapp.presentation.main.FragmentConfig
-import com.amaterisa.movielistapp.utils.MovieUtils
-import com.amaterisa.movielistapp.utils.MovieUtils.getImageUrl
-import com.amaterisa.movielistapp.utils.MovieUtils.loadImageWithGlide
+import com.amaterisa.movielistapp.presentation.utils.MovieUtils
+import com.amaterisa.movielistapp.presentation.utils.MovieUtils.getImageUrl
+import com.amaterisa.movielistapp.presentation.utils.MovieUtils.loadImageWithGlide
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 

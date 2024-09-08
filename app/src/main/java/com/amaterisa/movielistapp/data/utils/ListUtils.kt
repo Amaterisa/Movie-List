@@ -1,4 +1,4 @@
-package com.amaterisa.movielistapp.utils
+package com.amaterisa.movielistapp.data.utils
 
 object ListUtils {
     fun transformStringToList(string: String): List<Int> {

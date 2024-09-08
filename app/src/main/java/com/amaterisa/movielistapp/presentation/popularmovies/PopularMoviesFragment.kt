@@ -14,7 +14,7 @@ import com.amaterisa.movielistapp.presentation.adapter.GridSpaceItemDecoration
 import com.amaterisa.movielistapp.presentation.adapter.MovieListAdapter
 import com.amaterisa.movielistapp.presentation.base.BaseFragment
 import com.amaterisa.movielistapp.presentation.main.FragmentConfig
-import com.amaterisa.movielistapp.utils.ViewUtils.toVisibility
+import com.amaterisa.movielistapp.presentation.utils.ViewUtils.toVisibility
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

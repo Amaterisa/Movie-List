@@ -1,4 +1,4 @@
-package com.amaterisa.movielistapp.utils
+package com.amaterisa.movielistapp.presentation.utils
 
 import android.widget.ImageView
 import com.amaterisa.movielistapp.R

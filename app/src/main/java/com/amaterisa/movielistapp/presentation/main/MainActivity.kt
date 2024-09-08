@@ -12,7 +12,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.amaterisa.movielistapp.R
 import com.amaterisa.movielistapp.databinding.ActivityMainBinding
 import com.amaterisa.movielistapp.domain.model.Movie
-import com.amaterisa.movielistapp.utils.ViewUtils.toVisibility
+import com.amaterisa.movielistapp.presentation.utils.ViewUtils.toVisibility
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 

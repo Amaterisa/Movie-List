@@ -21,18 +21,11 @@
             android:visibility="gone"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/imv_movie_mask"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/img_mask"
-            app:layout_constraintBottom_toBottomOf="@id/imv_movie" />
-
         <TextView
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/default_padding"
+            android:layout_marginHorizontal="@dimen/default_material_margin"
             android:layout_marginTop="@dimen/default_padding"
             android:textColor="@color/font_color"
             android:textSize="@dimen/title_size"
@@ -45,7 +38,7 @@
             android:id="@+id/description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/default_padding"
+            android:layout_marginHorizontal="@dimen/default_material_margin"
             android:layout_marginTop="@dimen/text_margin_top"
             android:textColor="@color/gray"
             android:textSize="@dimen/small_size"

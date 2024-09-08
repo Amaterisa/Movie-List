@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:maxHeight="@dimen/search_movie_max_height"
     android:background="@drawable/rounded_background"
     android:padding="@dimen/half_default_padding">
 
@@ -37,17 +39,19 @@
     <TextView
         android:id="@+id/txv_description"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_marginTop="@dimen/half_default_padding"
-        android:ellipsize="end"
-        android:maxLines="7"
+        android:ellipsize="start"
         android:text="@string/no_items_description"
         android:textAlignment="textStart"
         android:textColor="@color/gray"
         android:textSize="@dimen/small_size"
+        android:maxLines="7"
         app:layout_constraintEnd_toEndOf="@id/txv_title"
         app:layout_constraintStart_toStartOf="@id/txv_title"
-        app:layout_constraintTop_toBottomOf="@id/txv_title" />
+        app:layout_constraintTop_toBottomOf="@id/txv_title"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="umtexto sjidj isjdis sjsjdsijod oisdjoiso sijo ojso osoij sisosoisoj ijosoi ssi iosios isi soisi oj siosi oshsuhsh usuhi shs hs h shs shu hs uusu suh shus us uh  shu s hsuhshu shushushus uss hushu suhs hus uhu shu sushu  shu shusu suh hus huds hudshu  sd uhs uhs hu hus uhs u ss uhs husuh shusushus husuhs su "/>
 
     <ImageView
         android:id="@+id/imv_next"

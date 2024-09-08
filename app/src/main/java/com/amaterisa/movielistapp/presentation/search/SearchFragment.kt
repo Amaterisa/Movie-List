@@ -127,6 +127,9 @@ class SearchFragment : BaseFragment() {
             moviesRv.toVisibility(!isEmpty && !hasError && !isQueryEmpty)
             noItemsLayout.toVisibility(isEmpty && !hasError && !isQueryEmpty)
             errorLayout.errorLayout.toVisibility(hasError && !isQueryEmpty)
+            if (isQueryEmpty || isEmpty ||hasError) {
+                btnTop.visibility = View.GONE
+            }
         }
     }
 

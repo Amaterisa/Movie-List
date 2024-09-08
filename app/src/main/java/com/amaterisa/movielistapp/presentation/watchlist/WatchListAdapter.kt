@@ -63,13 +63,12 @@ class WatchListAdapter(
                     setIcon(icon)
                 } else {
                     val txtColor = ContextCompat.getColor(context, R.color.font_color)
-                    val icon = ContextCompat.getDrawable(context, R.drawable.ic_mark)
                     setBackgroundResource(R.drawable.outline_background)
                     backgroundTintList = ContextCompat.getColorStateList(context, R.color.gray)
                     text = context.getString(R.string.mark_watched_label)
                     setTextColor(txtColor)
                     setIconTintResource(R.color.font_color)
-                    setIcon(icon)
+                    icon = null
                 }
             }
         }

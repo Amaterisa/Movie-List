@@ -1,7 +1,7 @@
 package com.amaterisa.movielistapp.di
 
-import com.amaterisa.movielistapp.BuildConfig
 import com.amaterisa.movielistapp.data.source.remote.MovieApiService
+import com.amaterisa.movielistapp.data.source.remote.interceptor.MovieApiInterceptor
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -15,8 +15,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    const val AUTH_HEADER = "Authorization"
-
     @Provides
     fun provideBaseUrl() = "https://api.themoviedb.org/3/"
 
@@ -24,12 +22,7 @@ object NetworkModule {
     @Provides
     fun provideOkhttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
-            .addInterceptor {
-                it.proceed(
-                    it.request().newBuilder()
-                        .addHeader(AUTH_HEADER, "Bearer ${BuildConfig.AUTH_TOKEN}").build()
-                )
-            }
+            .addInterceptor(MovieApiInterceptor())
             .build()
     }
 

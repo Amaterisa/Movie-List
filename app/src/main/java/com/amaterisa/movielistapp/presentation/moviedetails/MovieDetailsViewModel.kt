@@ -5,12 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.amaterisa.movielistapp.domain.common.Resource
-import com.amaterisa.movielistapp.domain.model.Genre
 import com.amaterisa.movielistapp.domain.model.Movie
 import com.amaterisa.movielistapp.domain.usecase.GetGenresUseCase
 import com.amaterisa.movielistapp.domain.usecase.GetWatchListUseCase
 import com.amaterisa.movielistapp.domain.usecase.RemoveMovieFromWatchListUseCase
 import com.amaterisa.movielistapp.domain.usecase.SaveMovieToWatchListUseCase
+import com.amaterisa.movielistapp.presentation.utils.MovieUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,42 +23,77 @@ class MovieDetailsViewModel @Inject constructor(
     private val removeMovieFromWatchListUseCase: RemoveMovieFromWatchListUseCase
 ) : ViewModel() {
 
-    private val _genresResult = MutableLiveData<Resource<List<Genre>>>()
-    val genresResult: LiveData<Resource<List<Genre>>>
-        get() = _genresResult
+    private var watchList = mutableListOf<Movie>()
 
-    private val _watchListResult = MutableLiveData<List<Movie>>()
-    val watchListResult: LiveData<List<Movie>>
-        get() = _watchListResult
+    private var _state = MutableLiveData<MovieDetailsState>(
+        MovieDetailsState.Resume(
+            MovieDetailsUiModel()
+        )
+    )
+    val state: LiveData<MovieDetailsState> get() = _state
 
-    fun getWatchListMovies() {
+    fun getWatchListMovies(movie: Movie) {
         viewModelScope.launch {
             getWatchListUseCase.invoke().collect {
-                _watchListResult.postValue(it)
+                watchList = it.toMutableList()
+                _state.value = MovieDetailsState.Resume(
+                    getCurrentStateModel().copy(
+                        isInWatchList = isInWatchList(movie)
+                    )
+                )
             }
         }
     }
 
-    fun toggleWatchList(movie: Movie) {
-        viewModelScope.launch {
-            if (isInWatchList(movie)) {
-                removeMovieFromWatchListUseCase.invoke(movie.id)
-            } else {
-                saveMovieToWatchListUseCase.invoke(movie)
+    fun toggleWatchList() {
+        val movie = getCurrentStateModel().movie
+        movie?.let {
+            viewModelScope.launch {
+                if (isInWatchList(movie)) {
+                    removeMovieFromWatchListUseCase.invoke(movie.id)
+                    _state.value = MovieDetailsState.Resume(
+                        getCurrentStateModel().copy(
+                            isInWatchList = false
+                        )
+                    )
+                } else {
+                    saveMovieToWatchListUseCase.invoke(movie)
+                    _state.value = MovieDetailsState.Resume(
+                        getCurrentStateModel().copy(
+                            isInWatchList = true
+                        )
+                    )
+                }
             }
         }
     }
 
-    fun getMovieGenres() {
+    fun setMovie(movie: Movie) {
+        _state.value = MovieDetailsState.Resume(
+            getCurrentStateModel().copy(
+                movie = movie
+            )
+        )
+    }
+
+    fun getMovieGenres(movie: Movie) {
         viewModelScope.launch {
             getGenresUseCase.invoke().collect {
-                _genresResult.postValue(it)
+                if (it is Resource.Success) {
+                    _state.value = MovieDetailsState.Resume(
+                        getCurrentStateModel().copy(
+                            genres = MovieUtils.getGenreNames(movie.genreIds, it.data)
+                        )
+                    )
+                }
             }
         }
     }
 
     fun isInWatchList(movie: Movie): Boolean {
-        val isInWatchList = watchListResult.value?.any { it.id == movie.id }
+        val isInWatchList = watchList.any { it.id == movie.id }
         return isInWatchList ?: false
     }
+
+    private fun getCurrentStateModel() = checkNotNull(_state.value?.uiModel)
 }

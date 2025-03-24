@@ -4,11 +4,12 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     alias(libs.plugins.androidx.navigation.safe.args)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
     namespace = "com.amaterisa.movielistapp"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.amaterisa.movielistapp"
@@ -45,11 +46,14 @@ android {
         viewBinding = true
         buildConfig = true
     }
+
+    buildFeatures {
+        compose = true
+    }
 }
 
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -80,4 +84,14 @@ dependencies {
     testImplementation(libs.mock.web.server)
     testImplementation(libs.mockito)
     testImplementation(libs.kotlinx.coroutines.test)
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.material3)
+    implementation("androidx.compose.ui:ui-tooling-preview:$1.7.8")
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.foundation)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.glide.compose)
+    implementation(libs.coil.compose)
+    implementation(libs.androidx.runtime.livedata)
 }
